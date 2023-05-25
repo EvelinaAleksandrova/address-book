@@ -20,6 +20,7 @@ import { RouterModule } from '@angular/router';
 import { AddressRecordsComponent } from './address-records/address-records.component';
 import { AuthComponent } from './auth/auth.component';
 import { LabelsComponent } from './labels/labels.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -42,11 +43,7 @@ import { LabelsComponent } from './labels/labels.component';
     MatMenuModule,
     MatListModule,
     HttpClientModule,
-    RouterModule.forRoot([
-      { path: '', component: AddressRecordsComponent },
-      { path: 'contacts', component: AddressRecordsComponent },
-      { path: 'labels', component: LabelsComponent }
-    ])
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
