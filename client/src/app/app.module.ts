@@ -11,12 +11,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+
 import { HttpClientModule } from '@angular/common/http';
 
 import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { HeaderComponent } from './header/header.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
-import { RouterModule } from '@angular/router';
 import { AddressRecordsComponent } from './address-records/address-records.component';
 import { AuthComponent } from './auth/auth.component';
 import { LabelsComponent } from './labels/labels.component';
@@ -42,6 +44,9 @@ import { AppRoutingModule } from './app-routing.module';
     MatToolbarModule,
     MatMenuModule,
     MatListModule,
+    MatPaginatorModule,
+    MatTableModule,
+
     HttpClientModule,
     AppRoutingModule
   ],
