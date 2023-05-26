@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-address-records',
@@ -8,6 +9,8 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrls: ['./address-records.component.css']
 })
 export class AddressRecordsComponent implements OnInit {
+  @ViewChild('drawer') drawer: MatDrawer;
+
   displayedColumns: string[] = ['id', 'firstname', 'lastname', 'email', 'gender', 'jobtitle', 'department'];
 
   EmpData: any[] = [
@@ -118,12 +121,10 @@ export class AddressRecordsComponent implements OnInit {
 
   constructor() {}
   // @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild('paginator')
-  paginator!: MatPaginator | null;
-  @ViewChild('paginatorPageSize')
-  paginatorPageSize!: MatPaginator | null;
+  @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild('paginatorPageSize') paginatorPageSize: MatPaginator;
 
-  pageSizes = [3, 5, 7];
+  pageSizes = [10, 11, 12];
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -131,4 +132,8 @@ export class AddressRecordsComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  openContactForm() {
+    console.log('Here');
+  }
 }

@@ -13,6 +13,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import {MatIconModule} from '@angular/material/icon';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -46,6 +48,8 @@ import { AppRoutingModule } from './app-routing.module';
     MatListModule,
     MatPaginatorModule,
     MatTableModule,
+    MatSidenavModule,
+    MatIconModule,
 
     HttpClientModule,
     AppRoutingModule

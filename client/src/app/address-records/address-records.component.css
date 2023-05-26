@@ -6,3 +6,20 @@ table {
   font-size: 14px;
   width: 100%;
 }
+
+.drawer-container {
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.sidenav-content {
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-contact-btn {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
