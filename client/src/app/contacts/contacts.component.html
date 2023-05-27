@@ -1,0 +1,66 @@
+<app-loader *ngIf="isLoading"></app-loader>
+
+<div class="layout">
+  <button mat-raised-button color="primary" class="add-contact-btn" (click)="openContactDrawer()">
+    <mat-icon> contacts</mat-icon>
+     ADD CONTACT</button>
+  <mat-drawer-container class="drawer-container" autosize>
+    <mat-drawer #drawer class="drawer" mode="side">
+      <form class="form-container" [formGroup]="contactFormGroup">
+        <span class="menu-type">{{menuType}} contact</span>
+        <div class="form-fields-container">
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input type="text" matInput [formControlName]="'name'" maxlength="100">
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Phone</mat-label>
+            <input type="tel" matInput [formControlName]="'phone'" maxlength="15">
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input type="tel" matInput [formControlName]="'email'">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-error *ngIf="contactFormGroup.get('email').hasError('pattern')">
+              Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="contactFormGroup.hasError('required')">
+              Email is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select [formControlName]="'type'">
+              <mat-option *ngFor="let type of typeData" [value]="type.code">
+                {{type.label}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="btn-container">
+          <button mat-button type="reset" (click)="closeDrawer('contactForm')">Cancel</button>
+          <button mat-flat-button [color]="'primary'" type="button" (click)="saveContact()">Save</button>
+        </div>
+      </form>
+    </mat-drawer>
+
+    <div class="sidenav-content" [ngClass]="{'custom-action-mode': isActionMode}">
+      <table mat-table [dataSource]="dataSourceWithPageSize" class="mat-elevation-z8">
+        <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+          <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+          <td mat-cell *matCellDef="let emp">{{ emp[column] }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let emprow; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator #paginatorPageSize [pageSizeOptions]="pageSizes" showFirstLastButtons></mat-paginator>
+    </div>
+  </mat-drawer-container>
+</div>

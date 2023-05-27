@@ -2,17 +2,51 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MenuType } from '../shared/enums';
 
 @Component({
-  selector: 'app-address-records',
-  templateUrl: './address-records.component.html',
-  styleUrls: ['./address-records.component.css']
+  selector: 'app-contacts',
+  templateUrl: './contacts.component.html',
+  styleUrls: ['./contacts.component.css']
 })
 export class AddressRecordsComponent implements OnInit {
   @ViewChild('drawer') drawer: MatDrawer;
+  // @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild('paginatorPageSize') paginatorPageSize: MatPaginator;
+
+  pageSizes = [10, 11, 12];
+  contactFormGroup: FormGroup;
+
+  menuType: string = '';
+
+  isLoading: boolean = true;
+  isActionMode: boolean = false;
 
   displayedColumns: string[] = ['id', 'firstname', 'lastname', 'email', 'gender', 'jobtitle', 'department'];
-
+  typeData: any[] = [
+    {
+      code: 1,
+      label: 'Urgent'
+    },
+    {
+      code: 2,
+      label: 'Urgent'
+    },
+    {
+      code: 3,
+      label: 'Urgent'
+    },
+    {
+      code: 4,
+      label: 'Urgent'
+    },
+    {
+      code: 5,
+      label: 'Urgent'
+    }
+  ];
   EmpData: any[] = [
     {
       id: 1,
@@ -119,21 +153,67 @@ export class AddressRecordsComponent implements OnInit {
   dataSource = new MatTableDataSource(this.EmpData);
   dataSourceWithPageSize = new MatTableDataSource(this.EmpData);
 
-  constructor() {}
-  // @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild('paginator') paginator: MatPaginator;
-  @ViewChild('paginatorPageSize') paginatorPageSize: MatPaginator;
-
-  pageSizes = [10, 11, 12];
+  constructor(private formBuilder: FormBuilder) {}
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSourceWithPageSize.paginator = this.paginatorPageSize;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.contactFormGroup = this.formBuilder.group({
+      name: [null, Validators.maxLength(100)],
+      phone: [null, Validators.maxLength(15)],
+      email: [
+        null,
+        [
+          Validators.pattern(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          )
+        ]
+      ],
+      type: [null]
+    });
+    this.isLoading = false;
+  }
 
-  openContactForm() {
+  openContactDrawer() {
     console.log('Here');
+    this.menuType = MenuType.create;
+    this.isActionMode = true;
+    this.drawer.toggle();
+  }
+
+  saveContact() {
+    if (this.contactFormGroup.invalid) {
+      this.contactFormGroup.markAllAsTouched();
+      return;
+    }
+    this.isLoading = true;
+
+    if (this.contactFormGroup.get('email').value === '') {
+      this.contactFormGroup.get('email').setValue(null);
+    }
+
+    // const method =
+    //   this.action === TypeMenu.create
+    //     ? this.contactService.createContact({ ...this.contactFormGroup.value })
+    //     : this.contactService.updateContact(this.currentContactId, { ...this.contactFormGroup.value });
+
+    // method.subscribe({
+    //   next: () => {
+    //     this.closeDrawerForm();
+    //     this.getContactsData();
+    //   },
+    //   error: () => (this.loading = false)
+    // });
+  }
+
+  closeDrawer(type: string): void {
+    if (type === 'contactForm') {
+      this.drawer.close();
+      this.contactFormGroup.reset();
+    }
+    this.isActionMode = false;
   }
 }
