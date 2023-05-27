@@ -4,6 +4,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuType } from '../shared/enums';
+import { ContactsService } from './contacts.service';
+import { SearchContact } from './models/contact-search.model';
+import { ContactModel } from './models/contact.model';
 
 @Component({
   selector: 'app-contacts',
@@ -16,7 +19,6 @@ export class AddressRecordsComponent implements OnInit {
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('paginatorPageSize') paginatorPageSize: MatPaginator;
 
-  pageSizes = [10, 11, 12];
   contactFormGroup: FormGroup;
 
   menuType: string = '';
@@ -24,7 +26,19 @@ export class AddressRecordsComponent implements OnInit {
   isLoading: boolean = true;
   isActionMode: boolean = false;
 
-  displayedColumns: string[] = ['id', 'firstname', 'lastname', 'email', 'gender', 'jobtitle', 'department'];
+  displayedColumns: string[] = ['name', 'phone', 'email', 'address', 'company', 'department', 'note'];
+  filters: { name: string; value: string }[] = [];
+
+  filterNames: { code: string; label: string }[] = [
+    { code: 'company', label: 'Company' },
+    { code: 'department', label: 'Department' },
+    { code: 'name', label: 'Name' },
+    { code: 'phone', label: 'Phone' },
+    { code: 'email', label: 'Email' },
+    { code: 'note', label: 'Note' },
+    { code: 'address', label: 'Address' }
+  ];
+
   typeData: any[] = [
     {
       code: 1,
@@ -47,123 +61,19 @@ export class AddressRecordsComponent implements OnInit {
       label: 'Urgent'
     }
   ];
-  EmpData: any[] = [
-    {
-      id: 1,
-      firstname: 'Mellie',
-      lastname: 'Gabbott',
-      email: 'mgabbott0@indiatimes.com',
-      gender: 'Female',
-      department: 'Support',
-      jobtitle: 'Support Analyst',
-      project: { name: 'project1', id: 1 }
-    },
-    {
-      id: 2,
-      firstname: 'Yehudi',
-      lastname: 'Ainsby',
-      email: 'yainsby1@w3.org',
-      gender: 'Female',
-      department: 'Support',
-      jobtitle: 'Support Analyst',
-      project: { name: 'project2', id: 2 }
-    },
-    {
-      id: 3,
-      firstname: 'Noellyn',
-      lastname: 'Primett',
-      email: 'nprimett2@ning.com',
-      gender: 'Female',
-      department: 'Human Resources',
-      jobtitle: 'Project Manager',
-      project: { name: 'project3', id: 3 }
-    },
-    {
-      id: 4,
-      firstname: 'Stefanie',
-      lastname: 'Yurenin',
-      email: 'syurenin3@boston.com',
-      gender: 'Female',
-      department: 'Marketing',
-      jobtitle: 'Senior officer',
-      project: { name: 'project4', id: 4 }
-    },
-    {
-      id: 5,
-      firstname: 'Stormi',
-      lastname: "O'Lunny",
-      email: 'solunny4@patch.com',
-      gender: 'Female',
-      department: 'Engineering',
-      jobtitle: 'Software Engineer',
-      project: { name: 'project5', id: 5 }
-    },
-    {
-      id: 6,
-      firstname: 'Keelia',
-      lastname: 'Giraudy',
-      email: 'kgiraudy5@nba.com',
-      gender: 'Male',
-      department: 'Marketing',
-      jobtitle: 'Senior officer',
-      project: { name: 'project6', id: 6 }
-    },
-    {
-      id: 7,
-      firstname: 'Ikey',
-      lastname: 'Laight',
-      email: 'ilaight6@wiley.com',
-      gender: 'Male',
-      department: 'Support',
-      jobtitle: 'Support Analyst',
-      project: { name: 'project7', id: 7 }
-    },
-    {
-      id: 8,
-      firstname: 'Adrianna',
-      lastname: 'Ruddom',
-      email: 'aruddom7@seattletimes.com',
-      gender: 'Male',
-      department: 'Marketing',
-      jobtitle: 'Senior officer',
-      project: { name: 'project8', id: 8 }
-    },
-    {
-      id: 9,
-      firstname: 'Dionysus',
-      lastname: 'McCory',
-      email: 'dmccory8@ox.ac.uk',
-      gender: 'Male',
-      department: 'Engineering',
-      jobtitle: 'Software Engineer',
-      project: { name: 'project9', id: 9 }
-    },
-    {
-      id: 10,
-      firstname: 'Claybourne',
-      lastname: 'Shellard',
-      email: 'cshellard9@rediff.com',
-      gender: 'Male',
-      department: 'Engineering',
-      jobtitle: 'Software Engineer',
-      project: { name: 'project10', id: 10 }
-    }
-  ];
+  contactsData: any[] = [];
 
-  dataSource = new MatTableDataSource(this.EmpData);
-  dataSourceWithPageSize = new MatTableDataSource(this.EmpData);
+  tableSize: number = 0;
+  pageSize: number = 10;
 
-  constructor(private formBuilder: FormBuilder) {}
+  contactsDataSource: MatTableDataSource<ContactModel> = new MatTableDataSource();
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSourceWithPageSize.paginator = this.paginatorPageSize;
-  }
+  constructor(private contactService: ContactsService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.contactFormGroup = this.formBuilder.group({
-      name: [null, Validators.maxLength(100)],
-      phone: [null, Validators.maxLength(15)],
+      name: [null, [Validators.maxLength(150), Validators.required]],
+      phone: [null, [Validators.maxLength(15), Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/)]],
       email: [
         null,
         [
@@ -172,9 +82,36 @@ export class AddressRecordsComponent implements OnInit {
           )
         ]
       ],
+      company: [null, Validators.maxLength(150)],
+      department: [null, Validators.maxLength(150)],
+      note: [null, Validators.maxLength(1500)],
+      address: [null, Validators.maxLength(150)],
       type: [null]
     });
-    this.isLoading = false;
+    this.getContactsData();
+  }
+
+  getContactsData(goToFirstPage = false) {
+    this.isLoading = true;
+    goToFirstPage && !!this.paginator && (this.paginator.pageIndex = 0);
+
+    const pageSize = this.paginator?.pageSize || 10;
+    const pageIndex = this.paginator?.pageIndex || 0;
+    const query: SearchContact = {};
+
+    for (let filter of this.filters) {
+      query[filter.name] = filter.value;
+    }
+
+    this.contactService.getPaginatedFilteredContacts(pageSize, pageIndex, query).subscribe({
+      next: res => {
+        this.contactsDataSource.data = res.filteredRecords;
+        this.tableSize = res.count;
+        this.pageSize = pageSize;
+        this.isLoading = false;
+      },
+      error: () => (this.isLoading = false)
+    });
   }
 
   openContactDrawer() {
@@ -194,19 +131,21 @@ export class AddressRecordsComponent implements OnInit {
     if (this.contactFormGroup.get('email').value === '') {
       this.contactFormGroup.get('email').setValue(null);
     }
+    console.log(this.contactFormGroup.value);
 
-    // const method =
-    //   this.action === TypeMenu.create
-    //     ? this.contactService.createContact({ ...this.contactFormGroup.value })
-    //     : this.contactService.updateContact(this.currentContactId, { ...this.contactFormGroup.value });
+    const method =
+      this.menuType === MenuType.create
+        ? this.contactService.createContact({ ...this.contactFormGroup.value })
+        : this.contactService.updateContact('this.currentContactId', { ...this.contactFormGroup.value });
 
-    // method.subscribe({
-    //   next: () => {
-    //     this.closeDrawerForm();
-    //     this.getContactsData();
-    //   },
-    //   error: () => (this.loading = false)
-    // });
+    method.subscribe({
+      next: () => {
+        this.closeDrawer('contactForm');
+        this.isLoading = false;
+        this.getContactsData();
+      },
+      error: () => (this.isLoading = false)
+    });
   }
 
   closeDrawer(type: string): void {

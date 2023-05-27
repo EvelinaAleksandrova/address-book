@@ -1,6 +1,5 @@
 .layout {
   display: flex;
-  display: flex;
   flex-direction: column;
   align-items: center;
 }
@@ -58,14 +57,6 @@ table {
   flex-direction: column;
 }
 .custom-action-mode {
-  /* position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center; */
   opacity: 0.5;
   background-color: rgb(174, 174, 174);
   z-index: 99999;
