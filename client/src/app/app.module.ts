@@ -17,6 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -56,6 +57,7 @@ import { LoaderComponent } from './loader/loader.component';
     MatSidenavModule,
     MatIconModule,
     MatSelectModule,
+    MatTooltipModule,
 
     HttpClientModule,
     AppRoutingModule

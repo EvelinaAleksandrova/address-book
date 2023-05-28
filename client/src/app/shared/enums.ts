@@ -1,4 +1,4 @@
 export enum MenuType {
-  create = 'Create',
-  edit = 'Edit'
+  create = 'CREATE',
+  edit = 'EDIT'
 }

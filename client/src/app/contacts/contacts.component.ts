@@ -15,9 +15,7 @@ import { ContactModel } from './models/contact.model';
 })
 export class AddressRecordsComponent implements OnInit {
   @ViewChild('drawer') drawer: MatDrawer;
-  // @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild('paginator') paginator: MatPaginator;
-  @ViewChild('paginatorPageSize') paginatorPageSize: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   contactFormGroup: FormGroup;
 
@@ -26,7 +24,7 @@ export class AddressRecordsComponent implements OnInit {
   isLoading: boolean = true;
   isActionMode: boolean = false;
 
-  displayedColumns: string[] = ['name', 'phone', 'email', 'address', 'company', 'department', 'note'];
+  displayedColumns: string[] = ['name', 'phone', 'email', 'address', 'company', 'department', 'note', 'button'];
   filters: { name: string; value: string }[] = [];
 
   filterNames: { code: string; label: string }[] = [
@@ -119,6 +117,17 @@ export class AddressRecordsComponent implements OnInit {
     this.menuType = MenuType.create;
     this.isActionMode = true;
     this.drawer.toggle();
+  }
+
+  openSearch() {}
+
+  editContact(contact: ContactModel) {
+    console.log(contact);
+    this.drawer.toggle();
+  }
+
+  deleteContact(contact: ContactModel) {
+    console.log(contact);
   }
 
   saveContact() {
