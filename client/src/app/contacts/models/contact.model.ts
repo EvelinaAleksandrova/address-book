@@ -1,5 +1,5 @@
 export interface ContactModel {
-  idntfr?: string;
+  id?: string;
   company?: string;
   department?: string;
   name?: string;

@@ -14,6 +14,7 @@ import { ContactsService } from './contacts.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { FilterContactsDto } from './dto/filter-contacts.dto';
 import { ResponseFilteredContactsDto } from './dto/response-filtered-contacts.dto';
+import { ResponseSuccessDTO } from '../shared/dtos/response-success.dto';
 
 @Controller('contacts')
 export class ContactsController {
@@ -37,25 +38,26 @@ export class ContactsController {
     );
   }
 
-  @Get()
-  getAllContacts() {
-    return this.contactsService.getContacts();
+  @Put('update-contact/:id')
+  async updateContact(
+    @Param('id') id: string,
+    @Body() updateContactDto: CreateContactDto,
+  ): Promise<ResponseSuccessDTO> {
+    return await this.contactsService.updateContact(id, updateContactDto);
   }
 
-  @Get(':id')
-  getContact(@Param('id') prodId: string) {
-    return this.contactsService.getSingleContact(prodId);
+  @Delete('delete-contact/:id')
+  async deleteContact(@Param('id') id: string): Promise<ResponseSuccessDTO> {
+    return await this.contactsService.deleteContact(id);
   }
 
-  @Put(':id')
-  updateContact() {
-    this.contactsService.updateContact();
-    return null;
-  }
+  // @Get()
+  // getAllContacts() {
+  //   return this.contactsService.getContacts();
+  // }
 
-  @Delete(':id')
-  removeContact(@Param('id') prodId: string) {
-    this.contactsService.deleteContact(prodId);
-    return null;
-  }
+  // @Get(':id')
+  // getContact(@Param('id') prodId: string) {
+  //   return this.contactsService.getSingleContact(prodId);
+  // }
 }

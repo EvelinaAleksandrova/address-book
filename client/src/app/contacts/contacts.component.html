@@ -177,5 +177,8 @@
         (page)="getContactsData()">
       </mat-paginator>
     </div>
+
   </mat-drawer-container>
+  <span *ngIf="!(contactsDataSource && contactsDataSource.data && contactsDataSource.data.length)">Няма намерени
+    резултати</span>
 </div>

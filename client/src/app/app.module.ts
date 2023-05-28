@@ -18,28 +18,25 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { HttpClientModule } from '@angular/common/http';
 
-import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { HeaderComponent } from './header/header.component';
-import { PostListComponent } from './posts/post-list/post-list.component';
 import { AddressRecordsComponent } from './contacts/contacts.component';
-import { AuthComponent } from './auth/auth.component';
 import { LabelsComponent } from './labels/labels.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoaderComponent } from './loader/loader.component';
+import { ModalComponent } from './shared/modal/modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PostCreateComponent,
     HeaderComponent,
-    PostListComponent,
     AddressRecordsComponent,
-    AuthComponent,
     LabelsComponent,
-    LoaderComponent
+    LoaderComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +55,7 @@ import { LoaderComponent } from './loader/loader.component';
     MatIconModule,
     MatSelectModule,
     MatTooltipModule,
+    MatDialogModule,
 
     HttpClientModule,
     AppRoutingModule

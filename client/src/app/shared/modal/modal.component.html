@@ -1,0 +1,14 @@
+<div>
+  <div *ngIf="msg">
+    <span *ngIf="msg.title"><b>{{msg.title}}</b></span>
+    <span>{{msg.text}}</span>
+  </div>
+  <div class="footer-buttons">
+    <button class="aggree-btn" mat-raised-button color="primary" (click)="closeDialog(true)">
+      Yes
+    </button>
+    <button mat-raised-button color="secondary" (click)="closeDialog(false)">
+      Cancel
+    </button>
+  </div>
+</div>

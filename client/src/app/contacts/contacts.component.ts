@@ -7,6 +7,9 @@ import { MenuType } from '../shared/enums';
 import { ContactsService } from './contacts.service';
 import { SearchContact } from './models/contact-search.model';
 import { ContactModel } from './models/contact.model';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { modalMessages } from '../shared/messages';
+import { ModalComponent } from '../shared/modal/modal.component';
 
 @Component({
   selector: 'app-contacts',
@@ -20,6 +23,7 @@ export class AddressRecordsComponent implements OnInit {
   contactFormGroup: FormGroup;
 
   menuType: string = '';
+  currentContactId: string = '';
 
   isLoading: boolean = true;
   isActionMode: boolean = false;
@@ -66,7 +70,7 @@ export class AddressRecordsComponent implements OnInit {
 
   contactsDataSource: MatTableDataSource<ContactModel> = new MatTableDataSource();
 
-  constructor(private contactService: ContactsService, private formBuilder: FormBuilder) {}
+  constructor(private contactService: ContactsService, private formBuilder: FormBuilder, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.contactFormGroup = this.formBuilder.group({
@@ -123,11 +127,37 @@ export class AddressRecordsComponent implements OnInit {
 
   editContact(contact: ContactModel) {
     console.log(contact);
-    this.drawer.toggle();
+    this.menuType = MenuType.edit;
+    this.isActionMode = true;
+    this.currentContactId = contact.id;
+    this.drawer.open();
+
+    for (const key in contact) {
+      if (Object.keys(this.contactFormGroup.controls).includes(key)) {
+        this.contactFormGroup.controls[key].setValue(contact[key]);
+      }
+    }
   }
 
   deleteContact(contact: ContactModel) {
     console.log(contact);
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      msg: { title: modalMessages.DELETE_CONTACT }
+    };
+    const dialogRef = this.dialog.open(ModalComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this.isLoading = true;
+        this.contactService.deleteContact(contact.id).subscribe({
+          next: res => {
+            this.getContactsData(true);
+          },
+          error: () => (this.isLoading = false)
+        });
+      }
+    });
   }
 
   saveContact() {
@@ -140,17 +170,15 @@ export class AddressRecordsComponent implements OnInit {
     if (this.contactFormGroup.get('email').value === '') {
       this.contactFormGroup.get('email').setValue(null);
     }
-    console.log(this.contactFormGroup.value);
 
     const method =
       this.menuType === MenuType.create
         ? this.contactService.createContact({ ...this.contactFormGroup.value })
-        : this.contactService.updateContact('this.currentContactId', { ...this.contactFormGroup.value });
+        : this.contactService.updateContact(this.currentContactId, { ...this.contactFormGroup.value });
 
     method.subscribe({
       next: () => {
         this.closeDrawer('contactForm');
-        this.isLoading = false;
         this.getContactsData();
       },
       error: () => (this.isLoading = false)
