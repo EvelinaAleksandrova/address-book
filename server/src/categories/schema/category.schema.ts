@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import * as mongoose from 'mongoose';
-import { TypeInterface } from '../interface/type.interface';
+import { CategoryInterface } from '../interface/category.interface';
 
-export const TypeSchema = new mongoose.Schema<TypeInterface>(
+export const CategorySchema = new mongoose.Schema<CategoryInterface>(
   {
     code: String,
     label: String,

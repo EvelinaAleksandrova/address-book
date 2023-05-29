@@ -2,7 +2,7 @@
 import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()
-export class ResponseTypeDto {
+export class ResponseCategoryDto {
   @Expose()
   readonly code: string;
 

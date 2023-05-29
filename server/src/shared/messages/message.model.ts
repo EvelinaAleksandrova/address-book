@@ -2,7 +2,7 @@
 export enum Messages {
   DefaultErrorMessage = 'Error occured.',
 
-  // Types
-  ExistingType = 'Existing type.',
-  NonExistingType = 'Non existing type.',
+  // Categories
+  ExistingCategory = 'Existing category.',
+  NonExistingCategory = 'Non existing category.',
 }

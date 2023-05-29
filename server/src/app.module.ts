@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ContactsModule } from './contacts/contacts.module';
-import { TypeModule } from './type/type.module';
+import { CategoryModule } from './categories/category.module';
 
 @Module({
   imports: [
@@ -11,7 +11,7 @@ import { TypeModule } from './type/type.module';
       `mongodb+srv://evelina:Yb8MaJFvlGTNkB7b@address-book.gvpdkze.mongodb.net/?retryWrites=true&w=majority`,
     ),
     ContactsModule,
-    TypeModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
