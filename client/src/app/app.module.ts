@@ -24,19 +24,19 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { HeaderComponent } from './header/header.component';
 import { AddressRecordsComponent } from './contacts/contacts.component';
-import { LabelsComponent } from './labels/labels.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoaderComponent } from './loader/loader.component';
 import { ModalComponent } from './shared/modal/modal.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     AddressRecordsComponent,
-    LabelsComponent,
     LoaderComponent,
-    ModalComponent
+    ModalComponent,
+    CategoriesComponent
   ],
   imports: [
     BrowserModule,
