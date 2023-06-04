@@ -25,7 +25,7 @@ export class ResponseContactDto {
   readonly note: string;
 
   @Expose()
-  readonly type: string;
+  readonly category: string;
 
   @Expose()
   readonly address: string;

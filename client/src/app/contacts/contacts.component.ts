@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuType } from '../shared/enums';
 import { ContactsService } from './contacts.service';
 import { SearchContact } from './models/contact-search.model';
@@ -11,6 +10,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { modalMessages } from '../shared/messages';
 import { ModalComponent } from '../shared/modal/modal.component';
 import { ModalContactComponent } from './modal-contact/modal-contact.component';
+import { CategoriesService } from '../categories/categories.service';
+import { CategoryModel } from '../categories/models/category.model';
 
 @Component({
   selector: 'app-contacts',
@@ -21,15 +22,15 @@ export class AddressRecordsComponent implements OnInit {
   @ViewChild('drawer') drawer: MatDrawer;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
-  contactFormGroup: FormGroup;
-
   menuType: string = '';
   currentContactId: string = '';
 
   isLoading: boolean = true;
   isActionMode: boolean = false;
 
-  displayedColumns: string[] = ['name', 'phone', 'email', 'address', 'company', 'department', 'note', 'button'];
+  categoriesData: CategoryModel[] = [];
+
+  displayedColumns: string[] = ['name', 'phone', 'email', 'address', 'company', 'department', 'note', 'category', 'button'];
   filters: { name: string; value: string }[] = [];
 
   filterNames: { code: string; label: string }[] = [
@@ -49,25 +50,12 @@ export class AddressRecordsComponent implements OnInit {
 
   contactsDataSource: MatTableDataSource<ContactModel> = new MatTableDataSource();
 
-  constructor(private contactService: ContactsService, private formBuilder: FormBuilder, private dialog: MatDialog) {}
+  constructor(private contactService: ContactsService, private dialog: MatDialog, private categoriesService: CategoriesService) {}
 
   ngOnInit(): void {
-    this.contactFormGroup = this.formBuilder.group({
-      name: [null, [Validators.maxLength(150), Validators.required]],
-      phone: [null, [Validators.maxLength(15), Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/)]],
-      email: [
-        null,
-        [
-          Validators.pattern(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          )
-        ]
-      ],
-      company: [null, Validators.maxLength(150)],
-      department: [null, Validators.maxLength(150)],
-      note: [null, Validators.maxLength(1500)],
-      address: [null, Validators.maxLength(150)],
-      type: [null]
+    this.categoriesService.getAllCategories().subscribe(res => {
+      console.log(res);
+      this.categoriesData = res;
     });
     this.getContactsData();
   }
@@ -99,7 +87,8 @@ export class AddressRecordsComponent implements OnInit {
     let dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       msg: { title: modalMessages.CREATE_CONTACT },
-      action: MenuType.create
+      action: MenuType.create,
+      categoriesData: this.categoriesData
     };
 
     dialogConfig.width = '50%';
@@ -120,7 +109,8 @@ export class AddressRecordsComponent implements OnInit {
     dialogConfig.data = {
       msg: { title: modalMessages.EDIT_CONTACT },
       action: MenuType.edit,
-      contact: contact
+      contact: contact,
+      categoriesData: this.categoriesData
     };
 
     dialogConfig.width = '50%';
@@ -133,7 +123,6 @@ export class AddressRecordsComponent implements OnInit {
       }
     });
   }
-
 
   deleteContact(contact: ContactModel) {
     let dialogConfig = new MatDialogConfig();
@@ -153,38 +142,5 @@ export class AddressRecordsComponent implements OnInit {
         });
       }
     });
-  }
-
-  saveContact() {
-    if (this.contactFormGroup.invalid) {
-      this.contactFormGroup.markAllAsTouched();
-      return;
-    }
-    this.isLoading = true;
-
-    if (this.contactFormGroup.get('email').value === '') {
-      this.contactFormGroup.get('email').setValue(null);
-    }
-
-    const method =
-      this.menuType === MenuType.create
-        ? this.contactService.createContact({ ...this.contactFormGroup.value })
-        : this.contactService.updateContact(this.currentContactId, { ...this.contactFormGroup.value });
-
-    method.subscribe({
-      next: () => {
-        this.closeDrawer('contactForm');
-        this.getContactsData();
-      },
-      error: () => (this.isLoading = false)
-    });
-  }
-
-  closeDrawer(type: string): void {
-    if (type === 'contactForm') {
-      this.drawer.close();
-      this.contactFormGroup.reset();
-    }
-    this.isActionMode = false;
   }
 }

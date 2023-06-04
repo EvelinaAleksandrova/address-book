@@ -34,7 +34,7 @@ export class CreateContactDto {
 
   @IsOptional()
   @IsString()
-  readonly type: string;
+  readonly category: string;
 
   @IsOptional()
   @IsString()

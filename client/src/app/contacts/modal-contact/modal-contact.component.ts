@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ContactModel } from '../models/contact.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ContactsService } from '../contacts.service';
+import { CategoryModel } from '../../categories/models/category.model';
 
 @Component({
   selector: 'app-modal-contact',
@@ -15,6 +16,7 @@ export class ModalContactComponent implements OnInit {
   contactFormGroup: FormGroup;
   action: string;
   contact: ContactModel;
+  categoriesData: CategoryModel[] = [];
 
   isLoading: boolean = false;
 
@@ -43,12 +45,13 @@ export class ModalContactComponent implements OnInit {
       department: [null, Validators.maxLength(150)],
       note: [null, Validators.maxLength(1500)],
       address: [null, Validators.maxLength(150)],
-      type: [null]
+      category: [null]
     });
 
     this.msg = this.data.msg;
     this.action = this.data.action;
     this.contact = this.data.contact;
+    this.categoriesData = this.data.categoriesData;
 
     if (this.action === MenuType.edit) {
       for (const key in this.contact) {

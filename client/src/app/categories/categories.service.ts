@@ -26,4 +26,8 @@ export class CategoriesService {
   getPaginatedFilteredCategories(pageSize: number, pageIndex: number, query): Observable<FilteredCategories> {
     return this._httpClient.get<FilteredCategories>(`${environment.url}/category/filtered/${pageSize}/${pageIndex}`, { params: query });
   }
+
+  getAllCategories(): Observable<CategoryModel[]> {
+    return this._httpClient.get<CategoryModel[]>(`${environment.url}/category/get-all-categories`);
+  }
 }

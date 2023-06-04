@@ -28,7 +28,7 @@ export class FilterContactsDto {
 
   @IsOptional()
   @IsString()
-  readonly type: string;
+  readonly category: string;
 
   @IsOptional()
   @IsString()

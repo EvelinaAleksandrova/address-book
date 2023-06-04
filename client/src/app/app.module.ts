@@ -31,6 +31,7 @@ import { CategoriesComponent } from './categories/categories.component';
 import { ModalCategoryComponent } from './categories/modal-category/modal-category.component';
 import { RemindersComponent } from './reminders/reminders.component';
 import { ModalContactComponent } from './contacts/modal-contact/modal-contact.component';
+import { GetLabelByCodePipe } from './shared/pipes/label-by-code-display.pipe';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { ModalContactComponent } from './contacts/modal-contact/modal-contact.co
     CategoriesComponent,
     ModalCategoryComponent,
     RemindersComponent,
-    ModalContactComponent
+    ModalContactComponent,
+    GetLabelByCodePipe
   ],
   imports: [
     BrowserModule,

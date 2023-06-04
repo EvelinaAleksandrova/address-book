@@ -79,6 +79,16 @@
           </span>
         </td>
       </ng-container>
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>
+          Category
+        </th>
+        <td mat-cell *matCellDef="let contact">
+          <span>
+            {{contact.category | labelByCodePipe: categoriesData}}
+          </span>
+        </td>
+      </ng-container>
       <ng-container matColumnDef="button">
         <th mat-header-cell *matHeaderCellDef>
         </th>

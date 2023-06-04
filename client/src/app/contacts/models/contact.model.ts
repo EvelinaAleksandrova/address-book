@@ -7,7 +7,7 @@ export interface ContactModel {
   email?: string;
   address?: string;
   note?: string;
-  type?: string;
+  category?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

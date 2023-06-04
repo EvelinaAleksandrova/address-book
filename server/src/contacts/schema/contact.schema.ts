@@ -12,7 +12,7 @@ export const ContactSchema = new mongoose.Schema<ContactInterface>(
     email: String,
     note: String,
     address: String,
-    type: String,
+    category: String,
   },
   {
     timestamps: true,

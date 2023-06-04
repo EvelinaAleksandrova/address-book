@@ -56,14 +56,14 @@
         <mat-icon matSuffix>note</mat-icon>
       </mat-form-field>
 
-      <!-- <mat-form-field>
-          <mat-label>Type</mat-label>
-          <mat-select [formControlName]="'type'">
-            <mat-option *ngFor="let type of typeData" [value]="type.code">
-              {{type.label}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field> -->
+      <mat-form-field>
+        <mat-label>Category</mat-label>
+        <mat-select [formControlName]="'category'">
+          <mat-option *ngFor="let category of categoriesData" [value]="category.code">
+            {{category.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </form>
   </div>
   <div class="footer-buttons">

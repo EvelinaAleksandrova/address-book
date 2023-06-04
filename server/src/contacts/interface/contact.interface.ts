@@ -10,7 +10,7 @@ export interface ContactInterface extends mongoose.Document {
   department: string;
   address: string;
   note: string;
-  type: string;
+  category: string;
   createdAt: Date;
   updatedAt: Date;
 }

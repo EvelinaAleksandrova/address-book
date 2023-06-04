@@ -48,8 +48,9 @@ export class CategoryService {
 
   async getAllCategories(): Promise<ResponseCategoryDto[]> {
     try {
-      const CategoryList = await this.categoryModel.find();
-      return plainToClass(ResponseCategoryDto, CategoryList);
+      const categoryList = await this.categoryModel.find();
+      console.log(categoryList)
+      return plainToClass(ResponseCategoryDto, categoryList);
     } catch (err) {
       throw new InternalServerErrorException(err);
     }

@@ -62,7 +62,14 @@ export class CategoryController {
   }
 
   @Delete('delete-category/:code')
-  async deleteCategory(@Param('code') code: string): Promise<ResponseSuccessDTO> {
+  async deleteCategory(
+    @Param('code') code: string,
+  ): Promise<ResponseSuccessDTO> {
     return await this.categoryService.deleteCategory(code);
+  }
+
+  @Get('get-all-categories')
+  async getAllCategory(): Promise<ResponseCategoryDto[]> {
+    return await this.categoryService.getAllCategories();
   }
 }
