@@ -10,11 +10,14 @@ import { ResponseConflictDto } from '../shared/dtos/response-conflict.dto';
 import { CategoryInterface } from './interface/category.interface';
 import { ResponseCategoryDto } from './dtos/response-category.dto';
 import { UpdateCategoryDto } from './dtos/update-category.dto';
+import { ResponseFilteredCategoriesDto } from './dtos/response-filtered-categories.dto';
+import { FilterCategoriesDto } from './dtos/filter-categories.dto';
 
 @Injectable()
 export class CategoryService {
   constructor(
-    @InjectModel('Category') private readonly categoryModel: Model<CategoryInterface>,
+    @InjectModel('Category')
+    private readonly categoryModel: Model<CategoryInterface>,
   ) {}
 
   async createCategory(
@@ -83,5 +86,54 @@ export class CategoryService {
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
+  }
+  async getPaginatedFilteredCategories(
+    pageSize: number,
+    pageIndex: number,
+    queryParams,
+  ): Promise<ResponseFilteredCategoriesDto> {
+    try {
+      const query = this.getQuery(queryParams);
+      const sortOrder = -1;
+
+      const categories = await this.categoryModel.aggregate([
+        { $match: query },
+        {
+          $facet: {
+            filteredRecords: [
+              {
+                $sort: { name: sortOrder },
+              },
+              {
+                $skip: pageIndex * pageSize,
+              },
+              {
+                $limit: pageSize,
+              },
+            ],
+            recordsCount: [{ $count: 'count' }],
+          },
+        },
+        {
+          $unwind: '$recordsCount',
+        },
+        { $project: { filteredRecords: 1, count: '$recordsCount.count' } },
+      ]);
+
+      const res = categories?.length ? categories[0] : [];
+      return plainToClass(ResponseFilteredCategoriesDto, res);
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  private getQuery(queryParams: FilterCategoriesDto) {
+    const query: any = {};
+    for (const key in queryParams) {
+      query[key] = { $regex: queryParams[key], $options: 'i' };
+    }
+
+    return query;
   }
 }

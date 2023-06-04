@@ -6,6 +6,7 @@ export const CategorySchema = new mongoose.Schema<CategoryInterface>(
   {
     code: String,
     label: String,
+    isSpecial: Boolean,
   },
   {
     timestamps: true,

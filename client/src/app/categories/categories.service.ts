@@ -2,27 +2,28 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { CategoryModel } from './models/category.model';
+import { FilteredCategories } from './models/filtered-categories.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ContactsService {
+export class CategoriesService {
   constructor(private _httpClient: HttpClient) {}
 
-  createContact(contact: ContactModel): Observable<any> {
-    console.log(environment.url);
-    return this._httpClient.post(`${environment.url}/contacts/create-contact`, contact);
+  createCategory(category: CategoryModel): Observable<any> {
+    return this._httpClient.post(`${environment.url}/category/create-category`, category);
   }
 
-  updateContact(id: string, contact: ContactModel): Observable<any> {
-    return this._httpClient.put(`${environment.url}/contacts/update-contact/${id}`, contact);
+  updateCategory(id: string, category: CategoryModel): Observable<any> {
+    return this._httpClient.put(`${environment.url}/category/update-category/${id}`, category);
   }
 
-  deleteContact(id: string): Observable<any> {
-    return this._httpClient.delete(`${environment.url}/contacts/delete-contact/${id}`);
+  deleteCategory(id: string): Observable<any> {
+    return this._httpClient.delete(`${environment.url}/category/delete-category/${id}`);
   }
 
-  getPaginatedFilteredContacts(pageSize: number, pageIndex: number, query): Observable<FilteredContacts> {
-    return this._httpClient.get<FilteredContacts>(`${environment.url}/contacts/filtered/${pageSize}/${pageIndex}`, { params: query });
+  getPaginatedFilteredCategories(pageSize: number, pageIndex: number, query): Observable<FilteredCategories> {
+    return this._httpClient.get<FilteredCategories>(`${environment.url}/category/filtered/${pageSize}/${pageIndex}`, { params: query });
   }
 }

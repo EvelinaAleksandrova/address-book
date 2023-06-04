@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ContactModel } from './models/contact.model';
 import { environment } from '../../environments/environment';
-import { FilteredContacts } from './models/filtererd-contacts.model';
+import { FilteredContacts } from './models/filtered-contacts.model';
 
 @Injectable({
   providedIn: 'root'

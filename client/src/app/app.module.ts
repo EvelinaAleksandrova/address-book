@@ -28,6 +28,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoaderComponent } from './loader/loader.component';
 import { ModalComponent } from './shared/modal/modal.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { ModalCategoryComponent } from './categories/modal-category/modal-category.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { CategoriesComponent } from './categories/categories.component';
     AddressRecordsComponent,
     LoaderComponent,
     ModalComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    ModalCategoryComponent
   ],
   imports: [
     BrowserModule,

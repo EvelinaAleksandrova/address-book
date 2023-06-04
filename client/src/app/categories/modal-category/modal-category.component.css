@@ -1,0 +1,10 @@
+.footer-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.aggree-btn {
+  margin-right: 10px;
+}

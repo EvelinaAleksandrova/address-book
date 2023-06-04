@@ -41,28 +41,6 @@ export class AddressRecordsComponent implements OnInit {
     { code: 'address', label: 'Address' }
   ];
 
-  typeData: any[] = [
-    {
-      code: 1,
-      label: 'Urgent'
-    },
-    {
-      code: 2,
-      label: 'Urgent'
-    },
-    {
-      code: 3,
-      label: 'Urgent'
-    },
-    {
-      code: 4,
-      label: 'Urgent'
-    },
-    {
-      code: 5,
-      label: 'Urgent'
-    }
-  ];
   contactsData: any[] = [];
 
   tableSize: number = 0;
