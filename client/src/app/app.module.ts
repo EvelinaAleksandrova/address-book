@@ -29,6 +29,7 @@ import { LoaderComponent } from './loader/loader.component';
 import { ModalComponent } from './shared/modal/modal.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { ModalCategoryComponent } from './categories/modal-category/modal-category.component';
+import { RemindersComponent } from './reminders/reminders.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ModalCategoryComponent } from './categories/modal-category/modal-catego
     LoaderComponent,
     ModalComponent,
     CategoriesComponent,
-    ModalCategoryComponent
+    ModalCategoryComponent,
+    RemindersComponent
   ],
   imports: [
     BrowserModule,
