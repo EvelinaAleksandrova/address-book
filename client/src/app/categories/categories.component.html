@@ -6,48 +6,50 @@
       <mat-icon>category</mat-icon>
       ADD CATEGORY</button>
   </div>
+  <div class="table-container">
+    <table mat-table [dataSource]="categoriesDataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="label">
+        <th mat-header-cell *matHeaderCellDef>
+          Category
+        </th>
+        <td mat-cell *matCellDef="let category">
+          <span>
+            {{category.label }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="note">
+        <th mat-header-cell *matHeaderCellDef class="custom-w-note">
+          Note
+        </th>
+        <td mat-cell *matCellDef="let category" class="custom-w-note">
+          <span *ngIf="category.note">
+            <mat-icon matTooltip='{{category.note }}'>info</mat-icon>
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="button">
+        <th mat-header-cell *matHeaderCellDef>
+        </th>
+        <td mat-cell *matCellDef="let category">
+          <div class="custom-w">
+            <button matTooltip="Edit category" mat-flat-button (click)="editCategory(category)">
+              <mat-icon [color]="'primary'">edit</mat-icon>
+            </button>
+            <button matTooltip="Delete category" mat-flat-button (click)="deleteCategory(category)">
+              <mat-icon [color]="'warn'">delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
 
-  <table mat-table [dataSource]="categoriesDataSource" class="mat-elevation-z8">
-    <ng-container matColumnDef="label">
-      <th mat-header-cell *matHeaderCellDef>
-        Category
-      </th>
-      <td mat-cell *matCellDef="let category">
-        <span>
-          {{category.label }}
-        </span>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="note">
-      <th mat-header-cell *matHeaderCellDef class="custom-w-note">
-        Note
-      </th>
-      <td mat-cell *matCellDef="let category" class="custom-w-note">
-        <span *ngIf="category.note">
-          <mat-icon matTooltip='{{category.note }}'>info</mat-icon>
-        </span>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="button">
-      <th mat-header-cell *matHeaderCellDef class="custom-w-note">
-      </th>
-      <td mat-cell *matCellDef="let category" class="custom-w-note">
-        <div class="edit-btn-container flex flex-row items-center justify-end">
-          <button matTooltip="Edit category" class="" mat-flat-button (click)="editCategory(category)">
-            <mat-icon [color]="'primary'">edit</mat-icon>
-          </button>
-          <button class="" matTooltip="Delete category" mat-flat-button (click)="deleteCategory(category)">
-            <mat-icon [color]="'warn'">delete</mat-icon>
-          </button>
-        </div>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let category; columns: displayedColumns;"></tr>
-  </table>
-  <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons [pageSize]="pageSize || 10" [length]="tableSize" (page)="getCategoriesData()">
-  </mat-paginator>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let category; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons [pageSize]="pageSize || 10" [length]="tableSize"
+      (page)="getCategoriesData()">
+    </mat-paginator>
+  </div>
 </div>
 
 <span *ngIf="!(categoriesDataSource && categoriesDataSource.data && categoriesDataSource.data.length)">Няма намерени
