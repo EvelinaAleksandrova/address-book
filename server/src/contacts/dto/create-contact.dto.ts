@@ -8,15 +8,15 @@ import {
 
 export class CreateContactDto {
   @IsOptional()
-  @IsString({ message: 'Моля, въведете валиден текстов формат.' })
+  @IsString()
   readonly company: string;
 
   @IsOptional()
-  @IsString({ message: 'Моля, въведете валиден текстов формат за отдел.' })
+  @IsString()
   readonly department: string;
 
   @IsOptional()
-  @IsString({ message: 'Моля, въведете валиден текстов формат за име.' })
+  @IsString()
   readonly name: string;
 
   @IsOptional()
@@ -28,10 +28,8 @@ export class CreateContactDto {
   readonly phone: string;
 
   @IsOptional()
-  @IsString({ message: 'Моля, въведете валиден текстов формат.' })
-  @MaxLength(1500, {
-    message: 'Моля въведете по-малко от 1000 символа за пояснение.',
-  })
+  @IsString()
+  @MaxLength(1500)
   readonly note: string;
 
   @IsOptional()

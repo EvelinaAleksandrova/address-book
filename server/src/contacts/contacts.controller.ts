@@ -55,9 +55,4 @@ export class ContactsController {
   // getAllContacts() {
   //   return this.contactsService.getContacts();
   // }
-
-  // @Get(':id')
-  // getContact(@Param('id') prodId: string) {
-  //   return this.contactsService.getSingleContact(prodId);
-  // }
 }

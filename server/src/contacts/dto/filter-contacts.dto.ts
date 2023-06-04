@@ -3,34 +3,34 @@ import { IsOptional, IsString } from 'class-validator';
 
 export class FilterContactsDto {
   @IsOptional()
-  @IsString({ message: 'Моля, въведете валиден текстов формат.' })
+  @IsString()
   readonly company: string;
 
   @IsOptional()
-  @IsString({ message: 'Моля, въведете валиден текстов формат.' })
+  @IsString()
   readonly department: string;
 
   @IsOptional()
-  @IsString({ message: 'Моля, въведете валиден текстов формат.' })
+  @IsString()
   readonly name: string;
 
   @IsOptional()
-  @IsString({ message: 'Моля, въведете валиден текстов формат.' })
+  @IsString()
   readonly email: string;
 
   @IsOptional()
-  @IsString({ message: 'Моля, въведете валиден текстов формат.' })
+  @IsString()
   readonly phone: string;
 
   @IsOptional()
-  @IsString({ message: 'Моля, въведете валиден текстов формат.' })
+  @IsString()
   readonly note: string;
 
   @IsOptional()
-  @IsString({ message: 'Моля, въведете валиден текстов формат.' })
+  @IsString()
   readonly type: string;
 
   @IsOptional()
-  @IsString({ message: 'Моля, въведете валиден текстов формат.' })
+  @IsString()
   readonly address: string;
 }
