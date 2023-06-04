@@ -10,6 +10,7 @@ import { ContactModel } from './models/contact.model';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { modalMessages } from '../shared/messages';
 import { ModalComponent } from '../shared/modal/modal.component';
+import { ModalContactComponent } from './modal-contact/modal-contact.component';
 
 @Component({
   selector: 'app-contacts',
@@ -94,26 +95,45 @@ export class AddressRecordsComponent implements OnInit {
     });
   }
 
-  openContactDrawer() {
-    this.menuType = MenuType.create;
-    this.isActionMode = true;
-    this.drawer.toggle();
+  openContactModal() {
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      msg: { title: modalMessages.CREATE_CONTACT },
+      action: MenuType.create
+    };
+
+    dialogConfig.width = '50%';
+
+    const dialogRef = this.dialog.open(ModalContactComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        this.getContactsData(true);
+      }
+    });
   }
 
   openSearch() {}
 
   editContact(contact: ContactModel) {
-    this.menuType = MenuType.edit;
-    this.isActionMode = true;
-    this.currentContactId = contact.id;
-    this.drawer.open();
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      msg: { title: modalMessages.EDIT_CONTACT },
+      action: MenuType.edit,
+      contact: contact
+    };
 
-    for (const key in contact) {
-      if (Object.keys(this.contactFormGroup.controls).includes(key)) {
-        this.contactFormGroup.controls[key].setValue(contact[key]);
+    dialogConfig.width = '50%';
+
+    const dialogRef = this.dialog.open(ModalContactComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        this.getContactsData(true);
       }
-    }
+    });
   }
+
 
   deleteContact(contact: ContactModel) {
     let dialogConfig = new MatDialogConfig();

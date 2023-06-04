@@ -7,7 +7,7 @@ import { CategoryModel } from './models/category.model';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MenuType } from '../shared/enums';
 import { CategoriesService } from './categories.service';
-import { SearchCategory } from './models/caategory-search.model';
+import { SearchCategory } from './models/category-search.model';
 import { modalMessages } from '../shared/messages';
 import { ModalComponent } from '../shared/modal/modal.component';
 import { ModalCategoryComponent } from './modal-category/modal-category.component';

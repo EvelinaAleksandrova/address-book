@@ -49,9 +49,8 @@
     <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons [pageSize]="pageSize || 10" [length]="tableSize"
       (page)="getCategoriesData()">
     </mat-paginator>
+
+    <span *ngIf="!(categoriesDataSource && categoriesDataSource.data && categoriesDataSource.data.length)">Няма намерени
+      резултати</span>
   </div>
 </div>
-
-<span *ngIf="!(categoriesDataSource && categoriesDataSource.data && categoriesDataSource.data.length)">Няма намерени
-  резултати</span>
-<!-- </div> -->

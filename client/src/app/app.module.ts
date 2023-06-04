@@ -30,6 +30,7 @@ import { ModalComponent } from './shared/modal/modal.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { ModalCategoryComponent } from './categories/modal-category/modal-category.component';
 import { RemindersComponent } from './reminders/reminders.component';
+import { ModalContactComponent } from './contacts/modal-contact/modal-contact.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { RemindersComponent } from './reminders/reminders.component';
     ModalComponent,
     CategoriesComponent,
     ModalCategoryComponent,
-    RemindersComponent
+    RemindersComponent,
+    ModalContactComponent
   ],
   imports: [
     BrowserModule,

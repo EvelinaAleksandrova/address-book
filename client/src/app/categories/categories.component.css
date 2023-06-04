@@ -8,6 +8,11 @@ table {
   width: 60%;
 }
 
+mat-paginator{
+  width: 100%;
+  display: contents;
+}
+
 .full-width {
   font-size: 14px;
   width: 100%;

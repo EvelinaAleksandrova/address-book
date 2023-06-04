@@ -1,0 +1,77 @@
+<app-loader *ngIf="isLoading"></app-loader>
+<div class="modal-container">
+  <div *ngIf="msg">
+    <span class="text-spn" *ngIf="msg.title"><b>{{msg.title}}</b></span>
+  </div>
+  <div>
+    <form class="form-container" [formGroup]="contactFormGroup">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input type="text" matInput [formControlName]="'name'" maxlength="150">
+        <mat-icon matSuffix>person</mat-icon>
+        <mat-error *ngIf="contactFormGroup.hasError('required') || contactFormGroup.get('name').touched">
+          Name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Phone</mat-label>
+        <input type="tel" matInput [formControlName]="'phone'" maxlength="15">
+        <mat-icon matSuffix>phone</mat-icon>
+        <mat-error *ngIf="contactFormGroup.get('phone').hasError('pattern') ">
+          Please enter a valid telephone number
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input type="tel" matInput [formControlName]="'email'">
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error *ngIf="contactFormGroup.get('email').hasError('pattern')">
+          Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="contactFormGroup.hasError('required')">
+          Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Company</mat-label>
+        <input type="text" matInput [spellcheck]="false" [formControlName]="'company'" maxlength="150">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Department</mat-label>
+        <input type="text" matInput [spellcheck]="false" [formControlName]="'department'" maxlength="150">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Address</mat-label>
+        <input type="text" matInput [spellcheck]="false" [formControlName]="'address'" maxlength="150">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Note</mat-label>
+        <textarea matInput [rows]="2" [spellcheck]="false" matTextareaAutosize [formControlName]="'note'" maxlength="1500"></textarea>
+        <mat-icon matSuffix>note</mat-icon>
+      </mat-form-field>
+
+      <!-- <mat-form-field>
+          <mat-label>Type</mat-label>
+          <mat-select [formControlName]="'type'">
+            <mat-option *ngFor="let type of typeData" [value]="type.code">
+              {{type.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field> -->
+    </form>
+  </div>
+  <div class="footer-buttons">
+    <button class="aggree-btn" mat-raised-button color="primary" (click)="closeDialog(true)">
+      SAVE
+    </button>
+    <button mat-raised-button color="secondary" (click)="closeDialog(false)">
+      CANCEL
+    </button>
+  </div>
+</div>
