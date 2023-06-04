@@ -3,9 +3,6 @@ import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()
 export class ResponseCategoryDto {
-  @Expose({ name: 'idntfr' })
-  readonly id: string;
-
   @Expose()
   readonly code: string;
 
@@ -13,5 +10,5 @@ export class ResponseCategoryDto {
   readonly label: string;
 
   @Expose()
-  readonly isSpecial: boolean;
+  readonly note: string;
 }

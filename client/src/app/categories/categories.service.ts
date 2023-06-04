@@ -11,16 +11,16 @@ import { FilteredCategories } from './models/filtered-categories.model';
 export class CategoriesService {
   constructor(private _httpClient: HttpClient) {}
 
-  createCategory(category: CategoryModel): Observable<any> {
+  createCategory(category: CategoryModel): Observable<CategoryModel> {
     return this._httpClient.post(`${environment.url}/category/create-category`, category);
   }
 
-  updateCategory(id: string, category: CategoryModel): Observable<any> {
-    return this._httpClient.put(`${environment.url}/category/update-category/${id}`, category);
+  updateCategory(code: string, category: CategoryModel): Observable<any> {
+    return this._httpClient.put(`${environment.url}/category/update-category/${code}`, category);
   }
 
-  deleteCategory(id: string): Observable<any> {
-    return this._httpClient.delete(`${environment.url}/category/delete-category/${id}`);
+  deleteCategory(code: string): Observable<any> {
+    return this._httpClient.delete(`${environment.url}/category/delete-category/${code}`);
   }
 
   getPaginatedFilteredCategories(pageSize: number, pageIndex: number, query): Observable<FilteredCategories> {

@@ -2,6 +2,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -18,12 +19,13 @@ import { ResponseCategoryDto } from './dtos/response-category.dto';
 import { UpdateCategoryDto } from './dtos/update-category.dto';
 import { FilterCategoriesDto } from './dtos/filter-categories.dto';
 import { ResponseFilteredCategoriesDto } from './dtos/response-filtered-categories.dto';
+import { ResponseSuccessDTO } from '../shared/dtos/response-success.dto';
 
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  @Post()
+  @Post('create-category')
   @HttpCode(HttpStatus.OK)
   async createCategory(
     @Body() createCategoryDto: CreateCategoryDto,
@@ -50,11 +52,17 @@ export class CategoryController {
     return await this.categoryService.getAllCategories();
   }
 
-  @Put('update-category')
+  @Put('update-category/:code')
   @HttpCode(HttpStatus.OK)
   async updateCategory(
+    @Param('code') code: string,
     @Body() updateCategory: UpdateCategoryDto,
   ): Promise<ResponseCategoryDto | ResponseConflictDto> {
-    return await this.categoryService.updateCategory(updateCategory);
+    return await this.categoryService.updateCategory(code, updateCategory);
+  }
+
+  @Delete('delete-category/:code')
+  async deleteCategory(@Param('code') code: string): Promise<ResponseSuccessDTO> {
+    return await this.categoryService.deleteCategory(code);
   }
 }

@@ -95,7 +95,6 @@ export class AddressRecordsComponent implements OnInit {
   }
 
   openContactDrawer() {
-    console.log('Here');
     this.menuType = MenuType.create;
     this.isActionMode = true;
     this.drawer.toggle();
@@ -104,7 +103,6 @@ export class AddressRecordsComponent implements OnInit {
   openSearch() {}
 
   editContact(contact: ContactModel) {
-    console.log(contact);
     this.menuType = MenuType.edit;
     this.isActionMode = true;
     this.currentContactId = contact.id;
@@ -118,7 +116,6 @@ export class AddressRecordsComponent implements OnInit {
   }
 
   deleteContact(contact: ContactModel) {
-    console.log(contact);
     let dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       msg: { title: modalMessages.DELETE_CONTACT }

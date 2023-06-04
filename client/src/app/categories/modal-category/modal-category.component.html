@@ -1,7 +1,30 @@
-<div>
+<app-loader *ngIf="isLoading"></app-loader>
+<div class="modal-container">
   <div *ngIf="msg">
-    <span *ngIf="msg.title"><b>{{msg.title}}</b></span>
-    <span>{{msg.text}}</span>
+    <span class="text-spn" *ngIf="msg.title"><b>{{msg.title}}</b></span>
+  </div>
+  <div>
+    <form class="form-container" [formGroup]="categoryFormGroup">
+      <mat-form-field>
+        <mat-label>Category Name</mat-label>
+        <input type="text" matInput [formControlName]="'label'" maxlength="150">
+        <mat-icon matSuffix>category</mat-icon>
+        <mat-error *ngIf="categoryFormGroup.controls['label'].hasError('required')">
+          Label is <strong>required</strong>
+        </mat-error>
+
+        <mat-error *ngIf="categoryFormGroup.controls['label'].hasError('duplicate')">
+          Duplicated category
+        </mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Note</mat-label>
+        <textarea matInput [rows]="2" [spellcheck]="false" matTextareaAutosize [formControlName]="'note'" maxlength="1500"></textarea>
+        <mat-icon matSuffix>note</mat-icon>
+      </mat-form-field>
+    </form>
   </div>
   <div class="footer-buttons">
     <button class="aggree-btn" mat-raised-button color="primary" (click)="closeDialog(true)">

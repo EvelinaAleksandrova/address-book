@@ -1,5 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToClass } from 'class-transformer';
 import { Model } from 'mongoose';
@@ -12,6 +16,7 @@ import { ResponseCategoryDto } from './dtos/response-category.dto';
 import { UpdateCategoryDto } from './dtos/update-category.dto';
 import { ResponseFilteredCategoriesDto } from './dtos/response-filtered-categories.dto';
 import { FilterCategoriesDto } from './dtos/filter-categories.dto';
+import { ResponseSuccessDTO } from '../shared/dtos/response-success.dto';
 
 @Injectable()
 export class CategoryService {
@@ -23,27 +28,22 @@ export class CategoryService {
   async createCategory(
     createCategoryDto: CreateCategoryDto,
   ): Promise<ResponseCategoryDto | ResponseConflictDto> {
-    try {
-      const CategoryFound = await this.categoryModel.findOne({
-        label: { $regex: `^${createCategoryDto.label}$`, $options: 'i' },
-      });
-      if (CategoryFound) {
-        return plainToClass(ResponseConflictDto, {
-          message: Messages.ExistingCategory,
-        });
-      }
+    const CategoryFound = await this.categoryModel.findOne({
+      label: { $regex: `^${createCategoryDto.label}$`, $options: 'i' },
+    });
 
-      const CategoryModel = new this.categoryModel({
-        ...createCategoryDto,
-        code: shortid.generate(),
-      });
-
-      const CategoryToSave = await CategoryModel.save();
-
-      return plainToClass(ResponseCategoryDto, CategoryToSave);
-    } catch (err) {
-      throw new InternalServerErrorException(err);
+    if (CategoryFound) {
+      throw new BadRequestException();
     }
+
+    const CategoryModel = new this.categoryModel({
+      ...createCategoryDto,
+      code: shortid.generate(),
+    });
+
+    const CategoryToSave = await CategoryModel.save();
+
+    return plainToClass(ResponseCategoryDto, CategoryToSave);
   }
 
   async getAllCategories(): Promise<ResponseCategoryDto[]> {
@@ -55,38 +55,47 @@ export class CategoryService {
     }
   }
 
-  async updateCategory(updateCategoryDto: UpdateCategoryDto) {
+  async updateCategory(code: string, updateCategoryDto: UpdateCategoryDto) {
+    const codeDuplicated = await this.categoryModel.findOne({
+      label: { $regex: `^${updateCategoryDto.label}$`, $options: 'i' },
+      code: { $ne: code },
+    });
+
+    if (codeDuplicated) {
+      throw new BadRequestException();
+    }
+
+    const CategoryUpdated = await this.categoryModel.updateOne(
+      { code: code },
+      { $set: updateCategoryDto },
+    );
+
+    if (!CategoryUpdated) {
+      return plainToClass(ResponseConflictDto, {
+        message: Messages.NonExistingCategory,
+      });
+    }
+
+    return plainToClass(ResponseCategoryDto, {
+      code: code,
+      label: updateCategoryDto.label,
+    });
+  }
+
+  async deleteCategory(code: string): Promise<ResponseSuccessDTO> {
     try {
-      const codeDuplicated = await this.categoryModel.findOne({
-        label: { $regex: `^${updateCategoryDto.label}$`, $options: 'i' },
-        code: { $ne: updateCategoryDto.code },
-      });
+      const category = await this.categoryModel.deleteOne({ code: code });
 
-      if (codeDuplicated) {
-        return plainToClass(ResponseConflictDto, {
-          message: Messages.ExistingCategory,
-        });
+      if (!category.deletedCount) {
+        throw new InternalServerErrorException(Messages.DefaultErrorMessage);
       }
 
-      const CategoryUpdated = await this.categoryModel.updateOne(
-        { code: updateCategoryDto.code },
-        { $set: updateCategoryDto },
-      );
-
-      if (!CategoryUpdated) {
-        return plainToClass(ResponseConflictDto, {
-          message: Messages.NonExistingCategory,
-        });
-      }
-
-      return plainToClass(ResponseCategoryDto, {
-        code: updateCategoryDto.code,
-        label: updateCategoryDto.label,
-      });
+      return { message: '' };
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
   }
+
   async getPaginatedFilteredCategories(
     pageSize: number,
     pageIndex: number,

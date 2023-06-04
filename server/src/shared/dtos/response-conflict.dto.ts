@@ -4,5 +4,5 @@ import { Exclude, Expose } from 'class-transformer';
 @Exclude()
 export class ResponseConflictDto {
   @Expose()
-  readonly conflictMessage: string;
+  readonly message: string;
 }

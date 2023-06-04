@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class CreateCategoryDto {
   @IsNotEmpty()
@@ -8,4 +8,11 @@ export class CreateCategoryDto {
     message: 'Please, enter a valid category name of less than 50 characters.',
   })
   readonly label: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(1500, {
+    message: 'Please, enter a valid note of less than 1500 characters.',
+  })
+  readonly note: string;
 }

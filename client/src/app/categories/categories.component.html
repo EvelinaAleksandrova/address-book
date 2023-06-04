@@ -3,7 +3,7 @@
 <div class="layout">
   <div class="btn-container">
     <button mat-raised-button color="primary" class="add-category-btn" (click)="openCategoryModal()">
-      <mat-icon>categories</mat-icon>
+      <mat-icon>category</mat-icon>
       ADD CATEGORY</button>
   </div>
 
@@ -42,6 +42,7 @@
         </div>
       </td>
     </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let category; columns: displayedColumns;"></tr>
   </table>

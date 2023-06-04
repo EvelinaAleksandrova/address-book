@@ -12,7 +12,6 @@ export class ContactsService {
   constructor(private _httpClient: HttpClient) {}
 
   createContact(contact: ContactModel): Observable<any> {
-    console.log(environment.url);
     return this._httpClient.post(`${environment.url}/contacts/create-contact`, contact);
   }
 
