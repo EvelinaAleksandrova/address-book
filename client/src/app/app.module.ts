@@ -25,7 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { AddressRecordsComponent } from './contacts/contacts.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LoaderComponent } from './loader/loader.component';
+import { LoaderComponent } from './shared/loader/loader.component';
 import { ModalComponent } from './shared/modal/modal.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { ModalCategoryComponent } from './categories/modal-category/modal-category.component';

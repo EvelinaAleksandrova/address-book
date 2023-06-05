@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatDrawer } from '@angular/material/sidenav';
 import { MenuType } from '../shared/enums';
 import { ContactsService } from './contacts.service';
 import { SearchContact } from './models/contact-search.model';
@@ -19,7 +18,6 @@ import { CategoryModel } from '../categories/models/category.model';
   styleUrls: ['./contacts.component.css']
 })
 export class AddressRecordsComponent implements OnInit {
-  @ViewChild('drawer') drawer: MatDrawer;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   menuType: string = '';

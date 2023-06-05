@@ -2,8 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CategoriesService } from '../categories.service';
-import { CategoryModel } from '../models/category.model';
 import { MenuType } from '../../shared/enums';
+import { CategoryModel } from '../models/category.model';
 
 @Component({
   selector: 'app-modal-category',
