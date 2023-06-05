@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ContactsModule } from './contacts/contacts.module';
 import { CategoryModule } from './categories/category.module';
+import { RemindersModule } from './reminders/reminder.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { CategoryModule } from './categories/category.module';
     ),
     ContactsModule,
     CategoryModule,
+    RemindersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
