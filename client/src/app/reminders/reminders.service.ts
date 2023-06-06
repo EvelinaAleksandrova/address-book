@@ -15,12 +15,12 @@ export class RemindersService {
     return this._httpClient.post(`${environment.url}/reminders/create-reminder`, reminder);
   }
 
-  updateReminder(code: string, reminder: ReminderModel): Observable<any> {
-    return this._httpClient.put(`${environment.url}/reminders/update-reminder/${code}`, reminder);
+  updateReminder(id: string, reminder: ReminderModel): Observable<any> {
+    return this._httpClient.put(`${environment.url}/reminders/update-reminder/${id}`, reminder);
   }
 
-  deleteReminder(code: string): Observable<any> {
-    return this._httpClient.delete(`${environment.url}/reminders/delete-reminder/${code}`);
+  deleteReminder(id: string): Observable<any> {
+    return this._httpClient.delete(`${environment.url}/reminders/delete-reminder/${id}`);
   }
 
   getPaginatedFilteredReminders(pageSize: number, pageIndex: number, query): Observable<FilteredReminders> {

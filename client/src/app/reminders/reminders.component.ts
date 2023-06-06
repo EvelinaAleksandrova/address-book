@@ -9,6 +9,7 @@ import { MenuType, Reminders } from '../shared/enums';
 import { ModalReminderComponent } from './modal-reminder/modal-reminder.component';
 import { ContactModel } from '../contacts/models/contact.model';
 import { ContactsService } from '../contacts/contacts.service';
+import { ModalComponent } from '../shared/modal/modal.component';
 
 @Component({
   selector: 'app-reminders',
@@ -106,22 +107,22 @@ export class RemindersComponent implements OnInit {
     });
   }
 
-  deleteReminder(category: ReminderModel) {
-    // let dialogConfig = new MatDialogConfig();
-    // dialogConfig.data = {
-    //   msg: { title: modalMessages.DELETE_CATEGORY }
-    // };
-    // const dialogRef = this.dialog.open(ModalComponent, dialogConfig);
-    // dialogRef.afterClosed().subscribe((res: boolean) => {
-    //   if (res) {
-    //     this.isLoading = true;
-    //     this.remindersService.deleteCategory(category.code).subscribe({
-    //       next: res => {
-    //         this.getRemindersData(true);
-    //       },
-    //       error: () => (this.isLoading = false)
-    //     });
-    //   }
-    // });
+  deleteReminder(reminder: ReminderModel) {
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      msg: { title: modalMessages.DELETE_REMINDER }
+    };
+    const dialogRef = this.dialog.open(ModalComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this.isLoading = true;
+        this.remindersService.deleteReminder(reminder.id).subscribe({
+          next: res => {
+            this.getRemindersData(true);
+          },
+          error: () => (this.isLoading = false)
+        });
+      }
+    });
   }
 }
