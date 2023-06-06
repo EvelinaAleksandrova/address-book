@@ -55,28 +55,20 @@ export class ModalCategoryComponent implements OnInit {
         return;
       }
       this.isLoading = true;
+      let method;
+      this.action === MenuType.create
+        ? (method = this.categoriesService.createCategory(this.categoryFormGroup.value))
+        : (method = this.categoriesService.updateCategory(this.category.code, this.categoryFormGroup.value));
 
-      if (this.action === MenuType.create) {
-        this.categoriesService.createCategory(this.categoryFormGroup.value).subscribe({
-          next: res => {
-            this.dialogRef.close(choice);
-            this.isLoading = false;
-          },
-          error: res => {
-            this.setError(res);
-          }
-        });
-      } else {
-        this.categoriesService.updateCategory(this.category.code, this.categoryFormGroup.value).subscribe({
-          next: res => {
-            this.dialogRef.close(choice);
-            this.isLoading = false;
-          },
-          error: res => {
-            this.setError(res);
-          }
-        });
-      }
+      method.subscribe({
+        next: res => {
+          this.dialogRef.close(choice);
+          this.isLoading = false;
+        },
+        error: res => {
+          this.setError(res);
+        }
+      });
     } else {
       this.dialogRef.close(choice);
     }

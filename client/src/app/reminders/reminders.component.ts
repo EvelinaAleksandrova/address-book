@@ -41,7 +41,6 @@ export class RemindersComponent implements OnInit {
   ngOnInit(): void {
     this.reminders = Reminders;
     this.contactsService.getAllContacts().subscribe(res => {
-      console.log(res);
       this.contacts = res;
     });
     this.getRemindersData();
@@ -94,7 +93,9 @@ export class RemindersComponent implements OnInit {
     dialogConfig.data = {
       msg: { title: modalMessages.EDIT_REMINDER },
       action: MenuType.edit,
-      reminder: reminder
+      reminder: reminder,
+      contacts: this.contacts,
+      reminders: this.reminders
     };
     dialogConfig.width = '50%';
     const dialogRef = this.dialog.open(ModalReminderComponent, dialogConfig);

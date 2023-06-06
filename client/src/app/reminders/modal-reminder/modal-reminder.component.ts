@@ -18,7 +18,7 @@ export class ModalReminderComponent implements OnInit {
   reminder: ReminderModel;
   contacts: ContactModel[] = [];
   reminders = [];
-  minDate: Date = new Date()
+  minDate: Date = new Date();
 
   isLoading: boolean = false;
 
@@ -41,13 +41,12 @@ export class ModalReminderComponent implements OnInit {
 
     this.msg = this.data.msg;
     this.action = this.data.action;
-    this.reminder = this.data.category;
+    this.reminder = this.data.reminder;
     this.contacts = this.data.contacts;
     this.reminders = this.data.reminders;
-
     if (this.action === MenuType.edit) {
       for (const key in this.reminder) {
-        if (key !== 'code') {
+        if (key !== 'id') {
           if (Object.keys(this.reminderFormGroup.controls).includes(key)) {
             this.reminderFormGroup.controls[key].setValue(this.reminder[key]);
           }
@@ -63,29 +62,20 @@ export class ModalReminderComponent implements OnInit {
         return;
       }
       this.isLoading = true;
+      let method;
+      this.action === MenuType.create
+        ? (method = this.reminderService.createReminder(this.reminderFormGroup.value))
+        : (method = this.reminderService.updateReminder(this.reminder.id, this.reminderFormGroup.value));
 
-      if (this.action === MenuType.create) {
-        console.log(this.reminderFormGroup.value);
-        this.reminderService.createReminder(this.reminderFormGroup.value).subscribe({
-          next: res => {
-            this.dialogRef.close(choice);
-            this.isLoading = false;
-          },
-          error: res => {
-            this.isLoading = false;
-          }
-        });
-      } else {
-        this.reminderService.updateReminder(this.reminder.id, this.reminderFormGroup.value).subscribe({
-          next: res => {
-            this.dialogRef.close(choice);
-            this.isLoading = false;
-          },
-          error: res => {
-            this.isLoading = false;
-          }
-        });
-      }
+      method.subscribe({
+        next: res => {
+          this.dialogRef.close(choice);
+          this.isLoading = false;
+        },
+        error: res => {
+          this.isLoading = false;
+        }
+      });
     } else {
       this.dialogRef.close(choice);
     }

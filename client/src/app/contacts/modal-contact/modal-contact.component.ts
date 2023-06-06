@@ -71,28 +71,20 @@ export class ModalContactComponent implements OnInit {
         return;
       }
       this.isLoading = true;
+      let method;
+      this.action === MenuType.create
+        ? (method = this.contactsService.createContact(this.contactFormGroup.value))
+        : (method = this.contactsService.updateContact(this.contact.id, this.contactFormGroup.value));
 
-      if (this.action === MenuType.create) {
-        this.contactsService.createContact(this.contactFormGroup.value).subscribe({
-          next: res => {
-            this.dialogRef.close(choice);
-            this.isLoading = false;
-          },
-          error: res => {
-            this.isLoading = false;
-          }
-        });
-      } else {
-        this.contactsService.updateContact(this.contact.id, this.contactFormGroup.value).subscribe({
-          next: res => {
-            this.dialogRef.close(choice);
-            this.isLoading = false;
-          },
-          error: res => {
-            this.isLoading = false;
-          }
-        });
-      }
+      method.subscribe({
+        next: res => {
+          this.dialogRef.close(choice);
+          this.isLoading = false;
+        },
+        error: res => {
+          this.isLoading = false;
+        }
+      });
     } else {
       this.dialogRef.close(choice);
     }
