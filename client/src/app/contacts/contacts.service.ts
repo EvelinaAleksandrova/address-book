@@ -26,4 +26,9 @@ export class ContactsService {
   getPaginatedFilteredContacts(pageSize: number, pageIndex: number, query): Observable<FilteredContacts> {
     return this._httpClient.get<FilteredContacts>(`${environment.url}/contacts/filtered/${pageSize}/${pageIndex}`, { params: query });
   }
+
+  getAllContacts(): Observable<ContactModel[]> {
+    console.log("Here")
+    return this._httpClient.get<ContactModel[]>(`${environment.url}/contacts/get-all-contacts`);
+  }
 }

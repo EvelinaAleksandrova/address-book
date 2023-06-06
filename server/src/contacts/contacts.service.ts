@@ -14,6 +14,7 @@ import { ResponseFilteredContactsDto } from './dto/response-filtered-contacts.dt
 import { FilterContactsDto } from './dto/filter-contacts.dto';
 import shortid = require('shortid');
 import { Messages } from '../shared/messages/message.model';
+import { ResponseContactDto } from './dto/response-contact.dto';
 
 @Injectable()
 export class ContactsService {
@@ -63,6 +64,11 @@ export class ContactsService {
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
+  }
+
+  async getAllContacts(): Promise<ResponseContactDto[]> {
+    const contacts = await this.contactModel.find();
+    return plainToClass(ResponseContactDto, contacts);
   }
 
   async getPaginatedFilteredContacts(

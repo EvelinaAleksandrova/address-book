@@ -1,0 +1,52 @@
+<app-loader *ngIf="isLoading"></app-loader>
+<div class="modal-container">
+  <div *ngIf="msg">
+    <span class="text-spn" *ngIf="msg.title"><b>{{msg.title}}</b></span>
+  </div>
+  <div>
+    <form class="form-container" [formGroup]="reminderFormGroup">
+      <mat-form-field>
+        <mat-label>Contact</mat-label>
+        <mat-select [formControlName]="'contact'">
+          <mat-option *ngFor="let contact of contacts" [value]="contact.id">
+            {{contact.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="reminderFormGroup.controls['contact'].hasError('required')">
+          Contact is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input [formControlName]="'date'" [min]="minDate" matInput [matDatepicker]="picker">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Reminder</mat-label>
+        <mat-select [formControlName]="'reminder'">
+          <mat-option *ngFor="let reminder of reminders" [value]="reminder.code">
+            {{reminder.label}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="reminderFormGroup.controls['reminder'].hasError('required')">
+          Reminder is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Note</mat-label>
+        <textarea matInput [rows]="2" [spellcheck]="false" matTextareaAutosize [formControlName]="'note'" maxlength="1500"></textarea>
+        <mat-icon matSuffix>note</mat-icon>
+      </mat-form-field>
+    </form>
+  </div>
+  <div class="footer-buttons">
+    <button class="aggree-btn" mat-raised-button color="primary" (click)="closeDialog(true)">
+      SAVE
+    </button>
+    <button mat-raised-button color="secondary" (click)="closeDialog(false)">
+      CANCEL
+    </button>
+  </div>
+</div>

@@ -19,6 +19,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -32,6 +34,8 @@ import { ModalCategoryComponent } from './categories/modal-category/modal-catego
 import { RemindersComponent } from './reminders/reminders.component';
 import { ModalContactComponent } from './contacts/modal-contact/modal-contact.component';
 import { GetLabelByCodePipe } from './shared/pipes/label-by-code-display.pipe';
+import { ModalReminderComponent } from './reminders/modal-reminder/modal-reminder.component';
+import { GetNameByIdPipe } from './shared/pipes/name-by-id-display.pipe';
 
 @NgModule({
   declarations: [
@@ -44,7 +48,9 @@ import { GetLabelByCodePipe } from './shared/pipes/label-by-code-display.pipe';
     ModalCategoryComponent,
     RemindersComponent,
     ModalContactComponent,
-    GetLabelByCodePipe
+    GetLabelByCodePipe,
+    GetNameByIdPipe,
+    ModalReminderComponent
   ],
   imports: [
     BrowserModule,
@@ -64,6 +70,8 @@ import { GetLabelByCodePipe } from './shared/pipes/label-by-code-display.pipe';
     MatSelectModule,
     MatTooltipModule,
     MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
 
     HttpClientModule,
     AppRoutingModule

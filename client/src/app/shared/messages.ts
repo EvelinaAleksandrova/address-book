@@ -7,5 +7,10 @@ export const modalMessages = {
   // CATEGORY
   DELETE_CATEGORY: `Are you sure you want to delete the category? The action is irreversible!`,
   CREATE_CATEGORY: `ADD NEW CATEGORY`,
-  EDIT_CATEGORY: `EDIT CATEGORY`
+  EDIT_CATEGORY: `EDIT CATEGORY`,
+
+  //REMINDER
+  DELETE_REMINDER: `Are you sure you want to delete the reminder? The action is irreversible!`,
+  CREATE_REMINDER: `ADD NEW REMINDER`,
+  EDIT_REMINDER: `EDIT REMINDER`
 };

@@ -15,6 +15,7 @@ import { CreateContactDto } from './dto/create-contact.dto';
 import { FilterContactsDto } from './dto/filter-contacts.dto';
 import { ResponseFilteredContactsDto } from './dto/response-filtered-contacts.dto';
 import { ResponseSuccessDTO } from '../shared/dtos/response-success.dto';
+import { ResponseContactDto } from './dto/response-contact.dto';
 
 @Controller('contacts')
 export class ContactsController {
@@ -51,8 +52,8 @@ export class ContactsController {
     return await this.contactsService.deleteContact(id);
   }
 
-  // @Get()
-  // getAllContacts() {
-  //   return this.contactsService.getContacts();
-  // }
+  @Get('get-all-contacts')
+  async getAllContacts(): Promise<ResponseContactDto[]> {
+    return await this.contactsService.getAllContacts();
+  }
 }

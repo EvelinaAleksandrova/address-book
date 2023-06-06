@@ -4,6 +4,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ReminderModel } from './models/reminder.model';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { RemindersService } from './reminders.service';
+import { modalMessages } from '../shared/messages';
+import { MenuType, Reminders } from '../shared/enums';
+import { ModalReminderComponent } from './modal-reminder/modal-reminder.component';
+import { ContactModel } from '../contacts/models/contact.model';
+import { ContactsService } from '../contacts/contacts.service';
 
 @Component({
   selector: 'app-reminders',
@@ -18,8 +23,11 @@ export class RemindersComponent implements OnInit {
 
   isLoading: boolean = true;
 
-  displayedColumns: string[] = ['contact', 'date', 'note', 'button'];
+  displayedColumns: string[] = ['contact', 'date', 'reminder', 'note', 'button'];
   remindersData: any[] = [];
+  reminders = [];
+
+  contacts: ContactModel[] = [];
 
   tableSize: number = 0;
   pageSize: number = 10;
@@ -28,9 +36,14 @@ export class RemindersComponent implements OnInit {
 
   filters: { name: string; value: string }[] = [];
 
-  constructor(private remindersService: RemindersService, private dialog: MatDialog) {}
+  constructor(private remindersService: RemindersService, private contactsService: ContactsService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
+    this.reminders = Reminders;
+    this.contactsService.getAllContacts().subscribe(res => {
+      console.log(res);
+      this.contacts = res;
+    });
     this.getRemindersData();
   }
 
@@ -58,36 +71,38 @@ export class RemindersComponent implements OnInit {
   }
 
   openReminderModal() {
-    //   let dialogConfig = new MatDialogConfig();
-    //   dialogConfig.data = {
-    //     msg: { title: modalMessages.CREATE_CATEGORY },
-    //     action: MenuType.create
-    //   };
-    //   dialogConfig.width = '50%';
-    //   const dialogRef = this.dialog.open(ModalCategoryComponent, dialogConfig);
-    //   dialogRef.afterClosed().subscribe(res => {
-    //     if (res) {
-    //       this.getRemindersData(true);
-    //     }
-    //   });
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      msg: { title: modalMessages.CREATE_REMINDER },
+      action: MenuType.create,
+      contacts: this.contacts,
+      reminders: this.reminders
+    };
+    dialogConfig.width = '50%';
+    const dialogRef = this.dialog.open(ModalReminderComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        this.getRemindersData(true);
+      }
+    });
   }
 
   openSearch() {}
 
-  editReminder(category: ReminderModel) {
-    // let dialogConfig = new MatDialogConfig();
-    // dialogConfig.data = {
-    //   msg: { title: modalMessages.EDIT_CATEGORY },
-    //   action: MenuType.edit,
-    //   category: category
-    // };
-    // dialogConfig.width = '50%';
-    // const dialogRef = this.dialog.open(ModalCategoryComponent, dialogConfig);
-    // dialogRef.afterClosed().subscribe(res => {
-    //   if (res) {
-    //     this.getRemindersData(true);
-    //   }
-    // });
+  editReminder(reminder: ReminderModel) {
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      msg: { title: modalMessages.EDIT_REMINDER },
+      action: MenuType.edit,
+      reminder: reminder
+    };
+    dialogConfig.width = '50%';
+    const dialogRef = this.dialog.open(ModalReminderComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        this.getRemindersData(true);
+      }
+    });
   }
 
   deleteReminder(category: ReminderModel) {
