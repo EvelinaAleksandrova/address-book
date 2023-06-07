@@ -21,6 +21,7 @@ export class RemindersService {
     const newReminder = new this.reminderModel({
       ...createReminderDto,
       idntfr: shortid.generate(),
+      isReminderViewed: false,
     });
     await newReminder.save();
     return plainToClass(ResponseSuccessDTO, { message: '' });

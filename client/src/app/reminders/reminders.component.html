@@ -1,5 +1,30 @@
 <app-loader *ngIf="isLoading"></app-loader>
+<div class="notifications">
+  <button mat-raised-button class="notification-icon" (click)="openNotifications()">
+    <mat-icon>notifications_active</mat-icon>
+  </button>
+  <div class="notifications-container" *ngIf="isOpenNotification">
+    <div class="notification">
+      <span>
+        Evelina Aleksandrova
+      </span>
+      <span>
+        27.02.2023
+      </span>
+      <mat-icon class="check-icon">check_circle</mat-icon>
+    </div>
+    <div class="notification">
+      <span>
+        Evelina Aleksandrova
+      </span>
+      <span>
+        27.02.2023
+      </span>
+      <mat-icon class="check-icon">check_circle</mat-icon>
+    </div>
 
+  </div>
+</div>
 <div class="layout">
   <div class="btn-container">
     <button mat-raised-button color="primary" (click)="openReminderModal()">

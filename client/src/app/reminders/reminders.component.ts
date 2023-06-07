@@ -23,6 +23,7 @@ export class RemindersComponent implements OnInit {
   currentCategoryId: string = '';
 
   isLoading: boolean = true;
+  isOpenNotification: boolean = false;
 
   displayedColumns: string[] = ['contact', 'date', 'reminder', 'note', 'button'];
   remindersData: any[] = [];
@@ -45,6 +46,11 @@ export class RemindersComponent implements OnInit {
       this.contacts = res;
     });
     this.getRemindersData();
+  }
+
+  openNotifications() {
+    console.log('open');
+    this.isOpenNotification = !this.isOpenNotification;
   }
 
   getRemindersData(goToFirstPage = false) {
