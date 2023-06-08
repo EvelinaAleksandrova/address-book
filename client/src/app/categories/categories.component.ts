@@ -24,12 +24,6 @@ export class CategoriesComponent implements OnInit {
   isLoading: boolean = true;
 
   displayedColumns: string[] = ['label', 'note', 'button'];
-  filters: { name: string; value: string }[] = [];
-
-  filterNames: { code: string; label: string }[] = [
-    { code: 'category', label: 'Category' },
-    { code: 'note', label: 'Note' }
-  ];
 
   categoriesData: any[] = [];
 
@@ -51,10 +45,6 @@ export class CategoriesComponent implements OnInit {
     const pageSize = this.paginator?.pageSize || 10;
     const pageIndex = this.paginator?.pageIndex || 0;
     const query: SearchCategory = {};
-
-    for (let filter of this.filters) {
-      query[filter.name] = filter.value;
-    }
 
     this.categoriesService.getPaginatedFilteredCategories(pageSize, pageIndex, query).subscribe({
       next: res => {

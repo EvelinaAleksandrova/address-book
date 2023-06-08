@@ -28,6 +28,7 @@ export class RemindersComponent implements OnInit {
   displayedColumns: string[] = ['contact', 'date', 'reminder', 'note', 'button'];
   remindersData: any[] = [];
   reminders = [];
+  notifications = [];
 
   contacts: ContactModel[] = [];
 
@@ -35,8 +36,6 @@ export class RemindersComponent implements OnInit {
   pageSize: number = 10;
 
   remindersDataSource: MatTableDataSource<ReminderModel> = new MatTableDataSource();
-
-  filters: { name: string; value: string }[] = [];
 
   constructor(private remindersService: RemindersService, private contactsService: ContactsService, private dialog: MatDialog) {}
 
@@ -49,7 +48,6 @@ export class RemindersComponent implements OnInit {
   }
 
   openNotifications() {
-    console.log('open');
     this.isOpenNotification = !this.isOpenNotification;
   }
 
@@ -61,13 +59,27 @@ export class RemindersComponent implements OnInit {
     const pageIndex = this.paginator?.pageIndex || 0;
     const query = {};
 
-    for (let filter of this.filters) {
-      query[filter.name] = filter.value;
-    }
-
     this.remindersService.getPaginatedFilteredReminders(pageSize, pageIndex, query).subscribe({
       next: res => {
         this.remindersDataSource.data = res.filteredRecords;
+
+        let today: any = new Date();
+        this.notifications = [];
+        for (const event of this.remindersDataSource.data) {
+          if (!event.isEventViewed) {
+            let eventDate: any = new Date(event.date);
+            let differenceInMinutes = (today.getTime() - eventDate.getTime()) / 1000;
+            differenceInMinutes /= 60;
+
+            if (Math.abs(Math.round(differenceInMinutes)) < event.reminder) {
+              this.notifications.push(event);
+            }
+
+            this.notifications.sort(function (notification1, notification2) {
+              return new Date(notification1.date).getTime() - new Date(notification2.date).getTime();
+            });
+          }
+        }
         this.tableSize = res.count;
         this.pageSize = pageSize;
         this.isLoading = false;
@@ -123,6 +135,25 @@ export class RemindersComponent implements OnInit {
       if (res) {
         this.isLoading = true;
         this.remindersService.deleteReminder(reminder.id).subscribe({
+          next: res => {
+            this.getRemindersData(true);
+          },
+          error: () => (this.isLoading = false)
+        });
+      }
+    });
+  }
+
+  markEventAsViewed(notification) {
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      msg: { title: modalMessages.MARK_AS_VIEWED }
+    };
+    const dialogRef = this.dialog.open(ModalComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this.isLoading = true;
+        this.remindersService.markEventAsViewed(notification.id).subscribe({
           next: res => {
             this.getRemindersData(true);
           },

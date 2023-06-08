@@ -30,4 +30,8 @@ export class RemindersService {
   getAllReminders(): Observable<ReminderModel[]> {
     return this._httpClient.get<ReminderModel[]>(`${environment.url}/reminders/get-all-reminders`);
   }
+
+  markEventAsViewed(id: string): Observable<any> {
+    return this._httpClient.put(`${environment.url}/reminders/mark-as-viewed/${id}`, {});
+  }
 }

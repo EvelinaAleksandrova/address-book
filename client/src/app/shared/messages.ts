@@ -12,5 +12,6 @@ export const modalMessages = {
   //REMINDER
   DELETE_REMINDER: `Are you sure you want to delete the reminder? The action is irreversible!`,
   CREATE_REMINDER: `ADD NEW REMINDER`,
-  EDIT_REMINDER: `EDIT REMINDER`
+  EDIT_REMINDER: `EDIT REMINDER`,
+  MARK_AS_VIEWED: `Are you sure you want to mark event as viewed?`
 };

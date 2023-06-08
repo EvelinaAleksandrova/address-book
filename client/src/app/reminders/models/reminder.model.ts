@@ -4,6 +4,7 @@ export interface ReminderModel {
   reminder?: number;
   date?: Date;
   note?: String;
+  isEventViewed?: Boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

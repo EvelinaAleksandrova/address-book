@@ -21,7 +21,7 @@ export class RemindersService {
     const newReminder = new this.reminderModel({
       ...createReminderDto,
       idntfr: shortid.generate(),
-      isReminderViewed: false,
+      isEventViewed: false,
     });
     await newReminder.save();
     return plainToClass(ResponseSuccessDTO, { message: '' });
@@ -99,6 +99,23 @@ export class RemindersService {
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(error);
+    }
+  }
+
+  async markAsViewed(id: string): Promise<ResponseSuccessDTO> {
+    try {
+      const reminder = await this.reminderModel.updateOne(
+        { idntfr: id },
+        { $set: { isEventViewed: true } },
+      );
+
+      if (!reminder.modifiedCount) {
+        throw new InternalServerErrorException(Messages.DefaultErrorMessage);
+      }
+
+      return { message: '' };
+    } catch (err) {
+      throw new InternalServerErrorException(err);
     }
   }
 

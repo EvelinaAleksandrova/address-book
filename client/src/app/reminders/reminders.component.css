@@ -57,8 +57,10 @@ mat-paginator {
 }
 
 .check-icon {
-  top: 6px;
   color: rgb(0, 213, 0);
-  margin-top: 6px;
   position: relative;
+}
+.notification-number {
+  color: red;
+  font-size: 16px;
 }

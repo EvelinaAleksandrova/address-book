@@ -49,4 +49,9 @@ export class RemindersController {
   async deleteReminder(@Param('id') id: string): Promise<ResponseSuccessDTO> {
     return await this.remindersService.deleteReminder(id);
   }
+
+  @Put('mark-as-viewed/:id')
+  async markAsViewed(@Param('id') id: string): Promise<ResponseSuccessDTO> {
+    return await this.remindersService.markAsViewed(id);
+  }
 }

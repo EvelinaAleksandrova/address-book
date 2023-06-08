@@ -29,17 +29,16 @@ export class AddressRecordsComponent implements OnInit {
   categoriesData: CategoryModel[] = [];
 
   displayedColumns: string[] = ['name', 'phone', 'email', 'address', 'company', 'department', 'note', 'category', 'button'];
-  filters: { name: string; value: string }[] = [];
 
-  filterNames: { code: string; label: string }[] = [
-    { code: 'company', label: 'Company' },
-    { code: 'department', label: 'Department' },
-    { code: 'name', label: 'Name' },
-    { code: 'phone', label: 'Phone' },
-    { code: 'email', label: 'Email' },
-    { code: 'note', label: 'Note' },
-    { code: 'address', label: 'Address' }
-  ];
+  // filterNames: { code: string; label: string }[] = [
+  //   { code: 'company', label: 'Company' },
+  //   { code: 'department', label: 'Department' },
+  //   { code: 'name', label: 'Name' },
+  //   { code: 'phone', label: 'Phone' },
+  //   { code: 'email', label: 'Email' },
+  //   { code: 'note', label: 'Note' },
+  //   { code: 'address', label: 'Address' }
+  // ];
 
   contactsData: any[] = [];
 
@@ -52,7 +51,6 @@ export class AddressRecordsComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoriesService.getAllCategories().subscribe(res => {
-      console.log(res);
       this.categoriesData = res;
     });
     this.getContactsData();
@@ -65,10 +63,6 @@ export class AddressRecordsComponent implements OnInit {
     const pageSize = this.paginator?.pageSize || 10;
     const pageIndex = this.paginator?.pageIndex || 0;
     const query: SearchContact = {};
-
-    for (let filter of this.filters) {
-      query[filter.name] = filter.value;
-    }
 
     this.contactService.getPaginatedFilteredContacts(pageSize, pageIndex, query).subscribe({
       next: res => {

@@ -28,7 +28,6 @@ export class ContactsService {
   }
 
   getAllContacts(): Observable<ContactModel[]> {
-    console.log("Here")
     return this._httpClient.get<ContactModel[]>(`${environment.url}/contacts/get-all-contacts`);
   }
 }
