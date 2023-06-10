@@ -3,6 +3,7 @@ export interface ReminderModel {
   contact?: string;
   reminder?: number;
   date?: Date;
+  time?: string;
   note?: String;
   isEventViewed?: Boolean;
   createdAt?: Date;

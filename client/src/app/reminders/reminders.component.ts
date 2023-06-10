@@ -25,7 +25,7 @@ export class RemindersComponent implements OnInit {
   isLoading: boolean = true;
   isOpenNotification: boolean = false;
 
-  displayedColumns: string[] = ['contact', 'date', 'reminder', 'note', 'button'];
+  displayedColumns: string[] = ['contact', 'date', 'time', 'reminder', 'note', 'button'];
   remindersData: any[] = [];
   reminders = [];
   notifications = [];
@@ -45,6 +45,51 @@ export class RemindersComponent implements OnInit {
       this.contacts = res;
     });
     this.getRemindersData();
+
+    setInterval(() => {
+      let today: any = new Date();
+      let todayWithHours: any = new Date();
+      todayWithHours.setHours(0, 0, 0, 0);
+      this.notifications = [];
+
+      for (const event of this.remindersDataSource.data) {
+        if (!event.isEventViewed) {
+          let eventDate: any = new Date(event.date);
+          if (event.reminder) {
+            let regExEventTime = /([0-9][0-9]):([0-9][0-9])/;
+            let regExEventTimeArr = regExEventTime.exec(event.time);
+
+            let hours: number = Number(regExEventTimeArr[1]);
+            let minutes: number = Number(regExEventTimeArr[2]);
+
+            eventDate.setHours(hours);
+            eventDate.setMinutes(minutes - event.reminder);
+
+            if (today > eventDate || eventDate.toString() === today.toString()) {
+              this.notifications.push(event);
+            }
+          } else if (eventDate.toString() === todayWithHours.toString()) {
+            let regExEventTime = /([0-9][0-9]):([0-9][0-9])/;
+            let regExEventTimeArr = regExEventTime.exec(event.time);
+
+            let hours: number = Number(regExEventTimeArr[1]) * 60; //hours in minutes
+            let minutes: number = Number(regExEventTimeArr[2]);
+
+            let currentHours = today.getHours() * 60; //hours in minutes
+            let currentMinutes = today.getMinutes();
+
+            let eventTimeInMinutes = hours + minutes;
+            let currentTimeInMinutes = currentHours + currentMinutes;
+            if (currentTimeInMinutes >= eventTimeInMinutes) {
+              this.notifications.push(event);
+            }
+          }
+          this.notifications.sort(function (notification1, notification2) {
+            return new Date(notification1.date).getTime() - new Date(notification2.date).getTime();
+          });
+        }
+      }
+    }, 1500);
   }
 
   openNotifications() {
@@ -62,24 +107,6 @@ export class RemindersComponent implements OnInit {
     this.remindersService.getPaginatedFilteredReminders(pageSize, pageIndex, query).subscribe({
       next: res => {
         this.remindersDataSource.data = res.filteredRecords;
-
-        let today: any = new Date();
-        this.notifications = [];
-        for (const event of this.remindersDataSource.data) {
-          if (!event.isEventViewed) {
-            let eventDate: any = new Date(event.date);
-            let differenceInMinutes = (today.getTime() - eventDate.getTime()) / 1000;
-            differenceInMinutes /= 60;
-
-            if (Math.abs(Math.round(differenceInMinutes)) < event.reminder) {
-              this.notifications.push(event);
-            }
-
-            this.notifications.sort(function (notification1, notification2) {
-              return new Date(notification1.date).getTime() - new Date(notification2.date).getTime();
-            });
-          }
-        }
         this.tableSize = res.count;
         this.pageSize = pageSize;
         this.isLoading = false;
@@ -96,7 +123,7 @@ export class RemindersComponent implements OnInit {
       contacts: this.contacts,
       reminders: this.reminders
     };
-    dialogConfig.width = '50%';
+    dialogConfig.width = '25%';
     const dialogRef = this.dialog.open(ModalReminderComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(res => {
       if (res) {
@@ -116,7 +143,7 @@ export class RemindersComponent implements OnInit {
       contacts: this.contacts,
       reminders: this.reminders
     };
-    dialogConfig.width = '50%';
+    dialogConfig.width = '25%';
     const dialogRef = this.dialog.open(ModalReminderComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(res => {
       if (res) {
@@ -163,3 +190,10 @@ export class RemindersComponent implements OnInit {
     });
   }
 }
+
+// if (event.reminder !== null) {
+// let differenceInMinutes = (today.getTime() - eventDate.getTime()) / 1000;
+// differenceInMinutes /= 60;
+// if (Math.abs(Math.round(differenceInMinutes)) <= event.reminder) {
+//   this.notifications.push(event);
+// }

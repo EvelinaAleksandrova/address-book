@@ -10,6 +10,7 @@ export const ReminderSchema = new mongoose.Schema<ReminderInterface>(
     isEventViewed: Boolean,
     note: String,
     date: Date,
+    time: String,
   },
   {
     timestamps: true,

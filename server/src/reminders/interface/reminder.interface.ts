@@ -5,6 +5,7 @@ export interface ReminderInterface extends mongoose.Document {
   idntfr: string;
   contact: string;
   date: Date;
+  time: string;
   note: string;
   reminder: number;
   isEventViewed: boolean;

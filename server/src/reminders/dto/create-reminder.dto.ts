@@ -18,6 +18,10 @@ export class CreateReminderDto {
   @Type(() => Date)
   readonly date: Date;
 
+  @IsNotEmpty()
+  @IsString()
+  readonly time: string;
+
   @IsOptional()
   @IsString()
   @MaxLength(1500)

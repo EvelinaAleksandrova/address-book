@@ -13,6 +13,9 @@ export class ResponseReminderDto {
   readonly date: Date;
 
   @Expose()
+  readonly time: string;
+
+  @Expose()
   readonly reminder: number;
 
   @Expose()

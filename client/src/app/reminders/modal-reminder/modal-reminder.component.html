@@ -22,17 +22,26 @@
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="reminderFormGroup.controls['date'].hasError('required')">
+          Date is <strong>required</strong>
+        </mat-error>
       </mat-form-field>
+      <mat-form-field style="width: 40%;margin-top: 10px;">
+        <mat-label>Choose time</mat-label>
+        <input matInput type="time" name="time" [formControlName]="'time'" />
+        <mat-error *ngIf="reminderFormGroup.controls['time'].hasError('required')">
+          Time is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
       <mat-form-field>
+
         <mat-label>Reminder</mat-label>
         <mat-select [formControlName]="'reminder'">
           <mat-option *ngFor="let reminder of reminders" [value]="reminder.code">
             {{reminder.label}}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="reminderFormGroup.controls['reminder'].hasError('required')">
-          Reminder is <strong>required</strong>
-        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Note</mat-label>

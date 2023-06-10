@@ -36,6 +36,7 @@ export class ModalReminderComponent implements OnInit {
       contact: [null, [Validators.required]],
       reminder: [null],
       date: [null, Validators.required],
+      time: [null, Validators.required],
       note: [null, Validators.maxLength(1500)]
     });
 
