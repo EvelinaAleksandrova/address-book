@@ -14,6 +14,10 @@ export class CreateReminderDto {
   @IsString()
   readonly contact: string;
 
+  @IsOptional()
+  @IsString()
+  readonly category: string;
+
   @IsDate()
   @Type(() => Date)
   readonly date: Date;

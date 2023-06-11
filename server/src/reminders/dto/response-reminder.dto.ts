@@ -22,5 +22,8 @@ export class ResponseReminderDto {
   readonly note: string;
 
   @Expose()
+  readonly category: string;
+
+  @Expose()
   readonly isEventViewed: boolean;
 }

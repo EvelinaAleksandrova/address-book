@@ -6,21 +6,19 @@
   </button>
   <div class="notifications-container" *ngIf="isOpenNotification">
     <div class="notification" *ngFor="let notification of notifications">
-      <span>
+      <span class="mr">
         {{notification.contact | nameByIdPipe : contacts}}
       </span>
-      <span>
+      <span class="mr">
         {{notification.date | date:'dd.MM.yyyy'}}
       </span>
-      <span>{{notification.time}}</span>
-      <span *ngIf="notification.note">
-        <mat-icon matTooltip='{{notification.note }}'>info</mat-icon>
-      </span>
-      <button mat-icon-button matTooltip="Mark as seen" (click)="markEventAsViewed(notification)">
-        <mat-icon class="check-icon">check_circle</mat-icon>
-      </button>
+      <span class="mr">{{notification.time}}</span>
+      <div class="buttons">
+        <mat-icon *ngIf="notification.category" style="color:#3f51b5;" matTooltip='{{notification.category | labelByCodePipe: categories}}'>category</mat-icon>
+        <mat-icon *ngIf="notification.note" matTooltip='{{notification.note }}'>info</mat-icon>
+        <mat-icon style="color: rgb(0, 177, 0);" matTooltip="Mark as seen" (click)="markEventAsViewed(notification)">check_circle</mat-icon>
+      </div>
     </div>
-
   </div>
 </div>
 <div class="layout">

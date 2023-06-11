@@ -6,6 +6,7 @@ export const ReminderSchema = new mongoose.Schema<ReminderInterface>(
   {
     idntfr: String,
     contact: String,
+    category: String,
     reminder: Number,
     isEventViewed: Boolean,
     note: String,

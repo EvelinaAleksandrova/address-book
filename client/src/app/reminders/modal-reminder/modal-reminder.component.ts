@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RemindersService } from '../reminders.service';
 import { MenuType } from '../../shared/enums';
 import { ContactModel } from '../../contacts/models/contact.model';
+import { CategoryModel } from '../../categories/models/category.model';
 
 @Component({
   selector: 'app-modal-reminder',
@@ -17,8 +18,10 @@ export class ModalReminderComponent implements OnInit {
   action: string;
   reminder: ReminderModel;
   contacts: ContactModel[] = [];
+  categories: CategoryModel[] = [];
   reminders = [];
   minDate: Date = new Date();
+  currentContact = '';
 
   isLoading: boolean = false;
 
@@ -34,6 +37,7 @@ export class ModalReminderComponent implements OnInit {
   ngOnInit() {
     this.reminderFormGroup = this.formBuilder.group({
       contact: [null, [Validators.required]],
+      category: [null],
       reminder: [null],
       date: [null, Validators.required],
       time: [null, Validators.required],
@@ -45,6 +49,8 @@ export class ModalReminderComponent implements OnInit {
     this.reminder = this.data.reminder;
     this.contacts = this.data.contacts;
     this.reminders = this.data.reminders;
+    this.categories = this.data.categories;
+
     if (this.action === MenuType.edit) {
       for (const key in this.reminder) {
         if (key !== 'id') {
@@ -56,6 +62,10 @@ export class ModalReminderComponent implements OnInit {
     }
   }
 
+  onChangeContact(contact) {
+    this.currentContact = contact.value;
+  }
+
   closeDialog(choice: boolean) {
     if (choice) {
       if (this.reminderFormGroup.invalid) {
@@ -64,6 +74,15 @@ export class ModalReminderComponent implements OnInit {
       }
       this.isLoading = true;
       let method;
+
+      if (this.currentContact !== '') {
+        let foundContact = this.contacts.filter(contact => contact.id === this.currentContact);
+        if (foundContact) {
+          if (foundContact[0].category) {
+            this.reminderFormGroup.get('category').setValue(foundContact[0].category);
+          }
+        }
+      }
       this.action === MenuType.create
         ? (method = this.reminderService.createReminder(this.reminderFormGroup.value))
         : (method = this.reminderService.updateReminder(this.reminder.id, this.reminderFormGroup.value));

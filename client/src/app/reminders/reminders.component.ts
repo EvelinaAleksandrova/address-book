@@ -10,6 +10,9 @@ import { ModalReminderComponent } from './modal-reminder/modal-reminder.componen
 import { ContactModel } from '../contacts/models/contact.model';
 import { ContactsService } from '../contacts/contacts.service';
 import { ModalComponent } from '../shared/modal/modal.component';
+import { CategoriesService } from '../categories/categories.service';
+import { forkJoin, takeUntil } from 'rxjs';
+import { CategoryModel } from '../categories/models/category.model';
 
 @Component({
   selector: 'app-reminders',
@@ -20,7 +23,6 @@ export class RemindersComponent implements OnInit {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   menuType: string = '';
-  currentCategoryId: string = '';
 
   isLoading: boolean = true;
   isOpenNotification: boolean = false;
@@ -31,19 +33,27 @@ export class RemindersComponent implements OnInit {
   notifications = [];
 
   contacts: ContactModel[] = [];
+  categories: CategoryModel[] = [];
 
   tableSize: number = 0;
   pageSize: number = 10;
 
   remindersDataSource: MatTableDataSource<ReminderModel> = new MatTableDataSource();
 
-  constructor(private remindersService: RemindersService, private contactsService: ContactsService, private dialog: MatDialog) {}
+  constructor(
+    private remindersService: RemindersService,
+    private contactsService: ContactsService,
+    private categoriesServiece: CategoriesService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.reminders = Reminders;
-    this.contactsService.getAllContacts().subscribe(res => {
-      this.contacts = res;
+    forkJoin([this.contactsService.getAllContacts(), this.categoriesServiece.getAllCategories()]).subscribe(([contacts, categories]) => {
+      this.contacts = contacts;
+      this.categories = categories;
     });
+
     this.getRemindersData();
 
     setInterval(() => {
@@ -90,6 +100,8 @@ export class RemindersComponent implements OnInit {
         }
       }
     }, 1500);
+
+
   }
 
   openNotifications() {
@@ -121,6 +133,7 @@ export class RemindersComponent implements OnInit {
       msg: { title: modalMessages.CREATE_REMINDER },
       action: MenuType.create,
       contacts: this.contacts,
+      categories: this.categories,
       reminders: this.reminders
     };
     dialogConfig.width = '25%';
@@ -190,10 +203,3 @@ export class RemindersComponent implements OnInit {
     });
   }
 }
-
-// if (event.reminder !== null) {
-// let differenceInMinutes = (today.getTime() - eventDate.getTime()) / 1000;
-// differenceInMinutes /= 60;
-// if (Math.abs(Math.round(differenceInMinutes)) <= event.reminder) {
-//   this.notifications.push(event);
-// }

@@ -4,6 +4,7 @@ import * as mongoose from 'mongoose';
 export interface ReminderInterface extends mongoose.Document {
   idntfr: string;
   contact: string;
+  category: string;
   date: Date;
   time: string;
   note: string;

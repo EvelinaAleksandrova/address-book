@@ -6,6 +6,7 @@ export interface ReminderModel {
   time?: string;
   note?: String;
   isEventViewed?: Boolean;
+  category?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
