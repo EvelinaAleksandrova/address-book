@@ -8,8 +8,9 @@
       <mat-form-field>
         <mat-label>Contact</mat-label>
         <mat-select [formControlName]="'contact'" (selectionChange)="onChangeContact($event)">
-          <mat-option *ngFor="let contact of contacts" [value]="contact.id" >
-            {{contact.name}}
+          <mat-option *ngFor="let contact of contacts" [value]="contact.id">
+            {{contact.name }}
+            <mat-icon class="clb" *ngIf="contact.category" matTooltip="{{contact.category | labelByCodePipe: categories}}">category</mat-icon>
           </mat-option>
         </mat-select>
         <mat-error *ngIf="reminderFormGroup.controls['contact'].hasError('required')">

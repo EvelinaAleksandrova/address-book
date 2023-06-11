@@ -77,3 +77,11 @@ mat-paginator {
   margin-right: 3px;
   font-size: 17px;
 }
+
+.clb {
+  color: #3f51b5;
+}
+
+.clg {
+  color: rgb(0, 177, 0);
+}
